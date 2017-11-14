@@ -43,7 +43,7 @@ public class TelaCadastroHorario extends TelaComGridBagLayout {
 			minutos[i] = i;
 		}
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(400, 250);
+		setSize(600, 200);
 		setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 
@@ -89,6 +89,8 @@ public class TelaCadastroHorario extends TelaComGridBagLayout {
 			minFim = (int) cbMinutoFim.getSelectedItem();
 			try {
 				ControladorHorario.getInstance().adicionaHorario(horaInicio, minInicio, horaFim, minFim, horarios);
+				JOptionPane.showMessageDialog(null, "Horario adicionado com sucesso");
+
 			} catch (HorarioRepetidoException exception) {
 				JOptionPane.showMessageDialog(null, exception.getMessage(), "Erro no Cadastro de Horario", JOptionPane.ERROR_MESSAGE);
 			}
