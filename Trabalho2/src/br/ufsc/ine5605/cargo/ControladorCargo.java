@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import br.ufsc.ine5605.acesso.ControladorTentativaAcesso;
 import br.ufsc.ine5605.funcionario.ControladorFuncionario;
 import br.ufsc.ine5605.horario.ControladorHorario;
 import br.ufsc.ine5605.horario.Horario;
@@ -49,6 +50,7 @@ public class ControladorCargo {
     		opcao = tela.mostraMenu(opcoesMenuPrincipal);
     		switch (opcao){
     		case 0: 
+    			ControladorFuncionario.getInstance().incluirFuncionario();
     			break;
     		case 1: 
     			tela.listarCargos(listaCargos);
@@ -62,8 +64,11 @@ public class ControladorCargo {
     		case 4:
     			alterarCargo();
     			break;
+    		case 5:
+    			ControladorTentativaAcesso.getInstance().iniciaTentativa();
     		}
-    	} while (opcao != 0);
+    		
+    	} while (opcao != 6);
     }
 	
     /**

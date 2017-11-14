@@ -206,22 +206,22 @@ public class ControladorTentativaAcesso {
 		Funcionario funcionario = ControladorFuncionario.getInstance().findFuncionarioByMatricula(matricula);
 		if(funcionario == null) {
 			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.MATRICULA_INEXISTENTE) );
-			tela.mostraNegacao(MotivoNegacaoAcesso.MATRICULA_INEXISTENTE);
-		} else if(!funcionario.getCargo().getPossuiAcesso()){
+			telaAcesso.mostraNegacao(MotivoNegacaoAcesso.MATRICULA_INEXISTENTE);
+		} else if(!funcionario.getCargo().getPossuiAcesso() && !funcionario.getCargo().getEhGerencial()){
 			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.NAO_POSSUI_ACESSO) );
 			funcionario.setNumeroAcessosNegados(funcionario.getNumeroAcessosNegados() + 1);
-			tela.mostraNegacao(MotivoNegacaoAcesso.NAO_POSSUI_ACESSO);
+			telaAcesso.mostraNegacao(MotivoNegacaoAcesso.NAO_POSSUI_ACESSO);
 		} else if(funcionario.getNumeroAcessosNegados() >= 3) {
 			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.ACESSO_BLOQUEADO) );
 			funcionario.setNumeroAcessosNegados(funcionario.getNumeroAcessosNegados() + 1);
-			tela.mostraNegacao(MotivoNegacaoAcesso.ACESSO_BLOQUEADO);
+			telaAcesso.mostraNegacao(MotivoNegacaoAcesso.ACESSO_BLOQUEADO);
 		} else if(!funcionario.getCargo().getEhGerencial() && !hora.estaPresente(funcionario.getCargo().getHorariosPermitidos()) ) {
 			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.HORARIO_NAO_PERMITIDO) );
 			funcionario.setNumeroAcessosNegados(funcionario.getNumeroAcessosNegados() + 1);
-			tela.mostraNegacao(MotivoNegacaoAcesso.HORARIO_NAO_PERMITIDO);
+			telaAcesso.mostraNegacao(MotivoNegacaoAcesso.HORARIO_NAO_PERMITIDO);
 		}  else {
 			tentativas.add(new TentativaAcessoPermitido(data, hora, matricula));
-			tela.confirmaAcesso();
+			telaAcesso.confirmaAcesso();
 		}
 		
 	}

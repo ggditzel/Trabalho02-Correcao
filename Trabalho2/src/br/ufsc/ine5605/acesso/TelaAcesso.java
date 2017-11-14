@@ -63,6 +63,14 @@ public class TelaAcesso extends TelaComGridBagLayout{
 	public void setHora(Hora hora) {
 		this.hora = hora;
 	}
+	
+	public void mostraNegacao(MotivoNegacaoAcesso motivo) {
+		JOptionPane.showMessageDialog(null, motivo.getNome(), "Acesso Negado", JOptionPane.ERROR_MESSAGE);
+	}
+	public void confirmaAcesso() {
+		JOptionPane.showMessageDialog(null,"Acesso Permitido");
+	}
+	
 	private class ButtonActionListener implements ActionListener {
 
 		@Override
