@@ -148,6 +148,9 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 				possuiAcesso = rbSimAcesso.isSelected();
 				
 				if (!abortaCadastro){
+					if(!ehGerencial && possuiAcesso){
+						horariosPermitidos = ControladorCargo.getInstance().pegaHorarios();
+					}
 					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
 					valoresDefaultJanela();
 				}

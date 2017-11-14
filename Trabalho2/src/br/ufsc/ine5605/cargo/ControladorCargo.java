@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import br.ufsc.ine5605.funcionario.ControladorFuncionario;
 import br.ufsc.ine5605.horario.ControladorHorario;
+import br.ufsc.ine5605.horario.Horario;
 
 public class ControladorCargo {
 	private ArrayList<Cargo> listaCargos;
@@ -205,4 +206,9 @@ public class ControladorCargo {
                 break;
         }
     }
+
+	public ArrayList<Horario> pegaHorarios() {
+		
+		return ControladorHorario.getInstance().iniciaCadastro();
+	}
 }
