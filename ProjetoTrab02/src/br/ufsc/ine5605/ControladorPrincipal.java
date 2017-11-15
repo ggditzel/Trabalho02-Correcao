@@ -48,8 +48,6 @@ public class ControladorPrincipal {
 		
 		// so pra teste, pra mostrar se ta gravando tudo no arquivo
 		// a cada cadastro de cargo, ao abrir o programa a lista deve ter aumentado
-		MapeadorCargo mapeadorCargo = new MapeadorCargo();
-		
 		new TelaMenuPrincipal().setVisible(true);;
 	}
 

@@ -50,7 +50,7 @@ public class MapeadorCargo {
     	} catch (ClassNotFoundException e) {
     		JOptionPane.showMessageDialog(null, "ClassNotFoundException", "Excecao", JOptionPane.ERROR_MESSAGE);	
     	} catch (FileNotFoundException e) {
-    		JOptionPane.showMessageDialog(null, "FileNotFoundException", "Excecao", JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(null, String.format("Sera criado o arquivo \"%s\" para armazenar os cargos", nomeArquivo), "Aviso", JOptionPane.WARNING_MESSAGE);
     	} catch (IOException e) {
     		JOptionPane.showMessageDialog(null, "IOException", "Excecao", JOptionPane.ERROR_MESSAGE);
     	}

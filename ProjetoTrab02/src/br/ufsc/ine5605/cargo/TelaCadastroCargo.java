@@ -180,7 +180,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 	
 	private class AcessoListener implements ItemListener {
 
-		// de repente vale s� avisar que depois tem que cadastrar hor�rio de acesso, tem que ver como ficam as outras janelas
+		// de repente vale so avisar que depois tem que cadastrar horario de acesso, tem que ver como ficam as outras janelas
 		public void itemStateChanged(ItemEvent evento) {
 			if (evento.getStateChange() == ItemEvent.SELECTED) {
 				if (rbSimAcesso.isSelected()) {
