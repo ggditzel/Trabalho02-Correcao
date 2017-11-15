@@ -54,7 +54,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 				
     	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(400, 250);
-		setAlwaysOnTop(true);
+		//setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 						
 		ButtonActionListener btListener = new ButtonActionListener();

@@ -1,10 +1,10 @@
 package br.ufsc.ine5605.cargo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
-import br.ufsc.ine5605.acesso.ControladorTentativaAcesso;
 import br.ufsc.ine5605.funcionario.ControladorFuncionario;
 import br.ufsc.ine5605.horario.ControladorHorario;
 import br.ufsc.ine5605.horario.Horario;
@@ -39,8 +39,8 @@ public class ControladorCargo {
     	return instancia;
     }
     
-    public ArrayList<Cargo> getListaCargos() {
-    	return listaCargos;
+    public Collection<Cargo> getListaCargos() {
+    	return mapeador.getList();
     }
     
     /**
@@ -155,9 +155,12 @@ public class ControladorCargo {
 //			inclusaoOK = false;
 //		}
 //		return inclusaoOK;
-		System.out.println("Tentativa de incluir cargo");
-		mapeador.put(new Cargo (cargo.codigo, cargo.nome, cargo.ehGerencial, cargo.possuiAcesso, cargo.horariosPermitidos));
-		System.out.println("Dado incluido no arquivo");
+		
+		if (mapeador.get(cargo.codigo) == null ) {		
+				mapeador.put(new Cargo (cargo.codigo, cargo.nome, cargo.ehGerencial, cargo.possuiAcesso, cargo.horariosPermitidos));
+		} else {
+			JOptionPane.showMessageDialog(null, "Ja existe cargo cadastrado com este codigo, tente novamente");
+		}
 	}
 	
 	
