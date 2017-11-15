@@ -170,24 +170,29 @@ public class ControladorCargo {
 	 * @return boolean indicando sucesso (true) ou fracasso (false)
 	 * @throws Exception Codigo Inexistente, impossivel excluir
 	 */
-    private boolean excluirCargo() {
-		int codigo = tela.excluirCargo();
-		Cargo c = findCargoByCodigo(codigo);
-		boolean remocaoOK = false;
-		if (c != null){
-			if (ControladorFuncionario.getInstance().listarFuncionariosPorCargo(codigo).isEmpty()){
-				listaCargos.remove(c);
-				ControladorHorario.getInstance().removeTodosHorarios(c);
-				tela.mostraMensagem("Cargo excluido com sucesso");
-				remocaoOK = true;
-			} else {
-				tela.mostraMensagem("Cargo nao pode ser excluido, possui funcionarios associados a ele");
-				remocaoOK = false;
-			}
-		} else {
-			tela.mostraMensagem("Codigo Inexistente, impossivel excluir");
-		}
-		return remocaoOK;
+    public void excluirCargo(int codigo) {
+    	mapeador.remove(mapeador.get(codigo));
+    	
+//		int codigo = tela.excluirCargo();
+//		Cargo c = findCargoByCodigo(codigo);
+//		boolean remocaoOK = false;
+//		if (c != null){
+//			if (ControladorFuncionario.getInstance().listarFuncionariosPorCargo(codigo).isEmpty()){
+//				listaCargos.remove(c);
+//				ControladorHorario.getInstance().removeTodosHorarios(c);
+//				tela.mostraMensagem("Cargo excluido com sucesso");
+//				remocaoOK = true;
+//			} else {
+//				tela.mostraMensagem("Cargo nao pode ser excluido, possui funcionarios associados a ele");
+//				remocaoOK = false;
+//			}
+//		} else {
+//			tela.mostraMensagem("Codigo Inexistente, impossivel excluir");
+//		}
+//		return remocaoOK;
+    	
+    	
+    	
 	}
 	
 	public Cargo findCargoByCodigo(int codigo){

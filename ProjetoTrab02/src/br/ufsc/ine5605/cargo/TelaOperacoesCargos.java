@@ -106,7 +106,10 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 			if(e.getSource() == btCadastrar) {
 				ControladorCargo.getInstance().telaIncluirCargo();
 			} else if(e.getSource() == btExcluir) {
-				
+				int linha = tabelaCargos.getSelectedRow();
+				int codigo = (int) tabelaCargos.getValueAt(linha, 0);
+				ControladorCargo.getInstance().excluirCargo(codigo);
+				atualizaTabela();
 			} else if(e.getSource() == btEditar) {
 				
 			} else if(e.getSource() == btAtualizar){
