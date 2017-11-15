@@ -1,10 +1,11 @@
 package br.ufsc.ine5605.cargo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.ufsc.ine5605.horario.Horario;
 
-public class Cargo implements ICargo{
+public class Cargo implements ICargo, Serializable{
 	private int codigo;
 	private String nome;
 	private boolean ehGerencial;

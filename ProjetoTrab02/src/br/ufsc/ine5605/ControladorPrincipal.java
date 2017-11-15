@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import br.ufsc.ine5605.acesso.ControladorTentativaAcesso;
 import br.ufsc.ine5605.cargo.ControladorCargo;
+import br.ufsc.ine5605.cargo.MapeadorCargo;
 import br.ufsc.ine5605.cargo.TelaCadastroCargo;
 import br.ufsc.ine5605.funcionario.ControladorFuncionario;
 import br.ufsc.ine5605.horario.ControladorHorario;
@@ -46,7 +47,14 @@ public class ControladorPrincipal {
 			}
 		} while (opcao != 0);
 	*/
-		new TelaMenuPrincipal();
+		
+		// so pra teste, pra mostrar se ta gravando tudo no arquivo
+		// a cada cadastro de cargo, ao abrir o programa a lista deve ter aumentado
+		System.out.println(new MapeadorCargo().getList());
+		
+		
+		
+		new TelaMenuPrincipal().setVisible(true);;
 	}
 
 	public void gerenciarSistema() {
@@ -68,7 +76,7 @@ public class ControladorPrincipal {
 //			}
 //		} while (opcao != 0);
 		
-		new TelaGerenciarSistema();
+		new TelaGerenciarSistema().setVisible(true);
 	}
 
 	public void iniciarTerminal() {

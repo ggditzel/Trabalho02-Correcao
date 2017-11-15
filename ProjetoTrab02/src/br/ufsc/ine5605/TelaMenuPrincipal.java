@@ -20,21 +20,22 @@ public class TelaMenuPrincipal extends TelaComGridBagLayout {
 		setSize(400, 250);
 		//setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
-		setVisible(true);
+		//setVisible(true);
 		
 		ButtonActionListener btListener = new ButtonActionListener();
 
 		lbPergunta = new JLabel("O que voce deseja fazer?");
-		adicionaComponente(lbPergunta, 0, 0, 1, 1);
 		
 		btGerenciarSistema = new JButton("Gerenciar Sistema");
 		btGerenciarSistema.addActionListener(btListener);
-		adicionaComponente(btGerenciarSistema, 0, 1, 1, 1);
 		
 		btAcessarSala = new JButton("Acessar o financeiro");
 		btAcessarSala.addActionListener(btListener);
-		adicionaComponente(btAcessarSala, 0, 2, 1, 1);
 		
+		adicionaComponente(lbPergunta, 0, 0, 1, 1);
+		adicionaComponente(btGerenciarSistema, 0, 1, 1, 1);
+		adicionaComponente(btAcessarSala, 0, 2, 1, 1);
+		repaint();
 	}
 	
 	private class ButtonActionListener implements ActionListener {

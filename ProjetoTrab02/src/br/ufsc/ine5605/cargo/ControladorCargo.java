@@ -13,6 +13,7 @@ public class ControladorCargo {
 	private ArrayList<Cargo> listaCargos;
 	private TelaCadastroCargo telaCadastroCargo;
 	private TelaCargo tela;
+	private MapeadorCargo mapeador;
 	private static ControladorCargo instancia;
 	
 	
@@ -28,6 +29,7 @@ public class ControladorCargo {
 	private ControladorCargo() {
 		tela = new TelaCargo();
         listaCargos = new ArrayList<>();
+        mapeador = new MapeadorCargo();
     }
 	
     public static ControladorCargo getInstance(){
@@ -142,17 +144,20 @@ public class ControladorCargo {
     }
 		
     	
-	public boolean incluirCargo(DadosCadastroCargo cargo) { 
-			boolean inclusaoOK = false;
-		if (findCargoByCodigo(cargo.codigo) == null){
-			listaCargos.add(new Cargo (cargo.codigo, cargo.nome, cargo.ehGerencial, cargo.possuiAcesso, cargo.horariosPermitidos));
-			tela.mostraMensagem("Cargo cadastrado com sucesso");
-			inclusaoOK = true;
-		} else {
-			tela.mostraMensagem("Este cargo ja esta cadastrado");
-			inclusaoOK = false;
-		}
-		return inclusaoOK;
+	public void incluirCargo(DadosCadastroCargo cargo) { 
+//			boolean inclusaoOK = false;
+//		if (findCargoByCodigo(cargo.codigo) == null){
+//			listaCargos.add(new Cargo (cargo.codigo, cargo.nome, cargo.ehGerencial, cargo.possuiAcesso, cargo.horariosPermitidos));
+//			tela.mostraMensagem("Cargo cadastrado com sucesso");
+//			inclusaoOK = true;
+//		} else {
+//			tela.mostraMensagem("Este cargo ja esta cadastrado");
+//			inclusaoOK = false;
+//		}
+//		return inclusaoOK;
+		System.out.println("Tentativa de incluir cargo");
+		mapeador.put(new Cargo (cargo.codigo, cargo.nome, cargo.ehGerencial, cargo.possuiAcesso, cargo.horariosPermitidos));
+		System.out.println("Dado incluido no arquivo");
 	}
 	
 	

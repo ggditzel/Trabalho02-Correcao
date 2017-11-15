@@ -24,7 +24,7 @@ public class TelaGerenciarSistema extends TelaComGridBagLayout {
 		setSize(400, 250);
 		//setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
-		setVisible(true);
+		//setVisible(true);
 		
 		ButtonActionListener btListener = new ButtonActionListener();
 
