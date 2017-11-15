@@ -51,22 +51,24 @@ public class ControladorPrincipal {
 
 	public void gerenciarSistema() {
 		int opcao = -1;
-		do {
-			opcao = tela.mostraMenu(opcoesGerenciarSistema);
-			switch (opcao) {
-			case 0: // voltar
-				break;
-			case 1: // operacoes com cargos
-				ControladorCargo.getInstance().mostraMenu();
-				break;
-			case 2: // operacoes com funcionarios
-				ControladorFuncionario.getInstance().mostraMenu();
-				break;
-			case 3: // relatiorios de acesso
-				ControladorTentativaAcesso.getInstance().menuRelatorioTentativas();
-				break;
-			}
-		} while (opcao != 0);
+//		do {
+//			opcao = tela.mostraMenu(opcoesGerenciarSistema);
+//			switch (opcao) {
+//			case 0: // voltar
+//				break;
+//			case 1: // operacoes com cargos
+//				ControladorCargo.getInstance().mostraMenu();
+//				break;
+//			case 2: // operacoes com funcionarios
+//				ControladorFuncionario.getInstance().mostraMenu();
+//				break;
+//			case 3: // relatiorios de acesso
+//				ControladorTentativaAcesso.getInstance().menuRelatorioTentativas();
+//				break;
+//			}
+//		} while (opcao != 0);
+		
+		new TelaGerenciarSistema();
 	}
 
 	public void iniciarTerminal() {

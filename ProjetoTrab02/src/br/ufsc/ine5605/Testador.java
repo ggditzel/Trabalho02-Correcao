@@ -6,7 +6,7 @@ public class Testador {
 
 	public static void main(String[] args) {
 		
-		//ControladorPrincipal.getInstance().inicia();
-		ControladorCargo.getInstance().mostraMenu();
+		ControladorPrincipal.getInstance().inicia();
+		//ControladorCargo.getInstance().mostraMenu();
 	}
 }

@@ -27,6 +27,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		
 		super("Operacoes com Cargos");
 		setSize(800, 250);
+		setVisible(true);
 		btCadastrar = new JButton("Cadastrar");
 		btExcluir = new JButton("Excluir");
 		btEditar = new JButton("Editar");

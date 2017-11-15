@@ -45,30 +45,32 @@ public class ControladorCargo {
      * Chama a tela que mostra o menu principal (relacionado a Cargos)
      */
     public void mostraMenu(){
-    	int opcao = -1;
-    	do {
-    		opcao = tela.mostraMenu(opcoesMenuPrincipal);
-    		switch (opcao){
-    		case 0: 
-    			ControladorFuncionario.getInstance().incluirFuncionario();
-    			break;
-    		case 1: 
-    			tela.listarCargos(listaCargos);
-    			break;
-    		case 2:
-    			telaIncluirCargo();
-    			break;
-    		case 3:
-  				excluirCargo();
-     			break;
-    		case 4:
-    			alterarCargo();
-    			break;
-    		case 5:
-    			ControladorTentativaAcesso.getInstance().iniciaTentativa();
-    		}
-    		
-    	} while (opcao != 6);
+//    	int opcao = -1;
+//    	do {
+//    		opcao = tela.mostraMenu(opcoesMenuPrincipal);
+//    		switch (opcao){
+//    		case 0: 
+//    			ControladorFuncionario.getInstance().incluirFuncionario();
+//    			break;
+//    		case 1: 
+//    			tela.listarCargos(listaCargos);
+//    			break;
+//    		case 2:
+//    			telaIncluirCargo();
+//    			break;
+//    		case 3:
+//  				excluirCargo();
+//     			break;
+//    		case 4:
+//    			alterarCargo();
+//    			break;
+//    		case 5:
+//    			ControladorTentativaAcesso.getInstance().iniciaTentativa();
+//    		}
+//    		
+//    	} while (opcao != 6);
+    	System.out.println("chamaria o menu");
+    	new TelaOperacoesCargos();
     }
 	
     /**
