@@ -69,8 +69,7 @@ public class ControladorCargo {
 //    		}
 //    		
 //    	} while (opcao != 6);
-    	System.out.println("chamaria o menu");
-    	new TelaOperacoesCargos();
+    	new TelaOperacoesCargos().setVisible(true);
     }
 	
     /**

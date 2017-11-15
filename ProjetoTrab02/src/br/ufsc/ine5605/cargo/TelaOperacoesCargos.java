@@ -2,6 +2,8 @@ package br.ufsc.ine5605.cargo;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,8 +29,11 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		
 		super("Operacoes com Cargos");
 		setSize(800, 250);
-		setVisible(true);
+		setLocationRelativeTo(null);
+		
+		ButtonActionListener btListener = new ButtonActionListener();
 		btCadastrar = new JButton("Cadastrar");
+		btCadastrar.addActionListener(btListener);
 		btExcluir = new JButton("Excluir");
 		btEditar = new JButton("Editar");
 		lbNomeTabela = new JLabel("Cargos Cadastrados");
@@ -67,5 +72,18 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		tabelaCargos.setModel(modeloTabela);
 		this.repaint();
 	}
-	
+
+	private class ButtonActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == btCadastrar) {
+				ControladorCargo.getInstance().telaIncluirCargo();
+			} else if(e.getSource() == btExcluir) {
+			} else if(e.getSource() == btEditar) {
+			}
+			
+		}
+		
+	}
 }

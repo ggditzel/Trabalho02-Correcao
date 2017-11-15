@@ -22,7 +22,7 @@ public class TelaGerenciarSistema extends TelaComGridBagLayout {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(400, 250);
-		setAlwaysOnTop(true);
+		//setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		
@@ -47,7 +47,6 @@ public class TelaGerenciarSistema extends TelaComGridBagLayout {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == btOperacoesCargos) {
-				System.out.println("Tentativa de chamar a tela ao pressionar o botao");
 				ControladorCargo.getInstance().mostraMenu();
 			} else if(e.getSource() == btOperacoesFuncionarios) {
 				ControladorFuncionario.getInstance().mostraMenu();

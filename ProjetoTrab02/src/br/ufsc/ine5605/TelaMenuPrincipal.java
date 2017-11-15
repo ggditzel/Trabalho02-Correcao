@@ -18,7 +18,7 @@ public class TelaMenuPrincipal extends TelaComGridBagLayout {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 250);
-		setAlwaysOnTop(true);
+		//setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		
