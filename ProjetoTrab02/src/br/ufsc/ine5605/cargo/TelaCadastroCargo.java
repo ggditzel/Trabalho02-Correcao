@@ -55,6 +55,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
     	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(400, 250);
 		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 						
 		ButtonActionListener btListener = new ButtonActionListener();
 		GerencialListener rbGerencialListener = new GerencialListener();
@@ -147,6 +148,9 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 				possuiAcesso = rbSimAcesso.isSelected();
 				
 				if (!abortaCadastro){
+					if(!ehGerencial && possuiAcesso){
+						horariosPermitidos = ControladorCargo.getInstance().pegaHorarios();
+					}
 					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
 					valoresDefaultJanela();
 				}
@@ -176,7 +180,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 	
 	private class AcessoListener implements ItemListener {
 
-		// de repente vale só avisar que depois tem que cadastrar horário de acesso, tem que ver como ficam as outras janelas
+		// de repente vale sï¿½ avisar que depois tem que cadastrar horï¿½rio de acesso, tem que ver como ficam as outras janelas
 		public void itemStateChanged(ItemEvent evento) {
 			if (evento.getStateChange() == ItemEvent.SELECTED) {
 				if (rbSimAcesso.isSelected()) {

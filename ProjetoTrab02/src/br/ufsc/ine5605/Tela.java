@@ -54,7 +54,7 @@ public abstract class Tela {
 				}
 
 				opcao = leitor.nextInt();
-				if (opcao < 0 || opcao > opcoes.length - 1) {
+				if (opcao < 0 || opcao > opcoes.length) {
 					respostaOK = false;
 				} else {
 					respostaOK = true;

@@ -2,6 +2,7 @@ package br.ufsc.ine5605.horario;
 
 import java.util.ArrayList;
 
+import br.ufsc.ine5605.HorarioRepetidoException;
 import br.ufsc.ine5605.cargo.Cargo;
 import br.ufsc.ine5605.cargo.ControladorCargo;
 import br.ufsc.ine5605.cargo.ICargo;
@@ -11,11 +12,13 @@ public class ControladorHorario {
     private ArrayList<Horario> horariosAcesso;
     private TelaHorario tela;
     private static ControladorHorario instancia;
+    private TelaCadastroHorario telaCadastro;
      
 
     private ControladorHorario() {
         horariosAcesso = new ArrayList<>();
         tela = new TelaHorario();
+        telaCadastro = new TelaCadastroHorario();
     }
     public static ControladorHorario getInstance(){
     	if(instancia == null){
@@ -32,7 +35,7 @@ public class ControladorHorario {
      */
     public ArrayList<Horario> iniciaCadastro(){
     	ArrayList<Horario> horariosCargo = new ArrayList<>();
-    	if(horariosAcesso.isEmpty()){
+    	/*if(horariosAcesso.isEmpty()){
     		horariosCargo.add(cadastrarHorario());
     	} else {
     		int opcao = tela.mostraListaAdicionarPrimeiroHorario(horariosAcesso);
@@ -64,6 +67,10 @@ public class ControladorHorario {
     			break;
     		}
     	}while(true);
+    	*/
+    	telaCadastro.setHorarios(horariosCargo);
+    	telaCadastro.setVisible(true);
+    	
     	
     	return horariosCargo;
 
@@ -82,7 +89,7 @@ public class ControladorHorario {
     		Hora horarioInicio = converte(inicio);
     		String fim = tela.perguntaFim();
     		Hora horarioFim = converte(fim);
-    		if(possuiHorario(horarioInicio, horarioFim)){
+    		if(possuiHorario(horarioInicio, horarioFim, horariosAcesso)){
     			tela.mostraAviso("Horario ja cadastrado.");
     			respostaOK = false; //Redundant
     		} else {
@@ -218,8 +225,8 @@ public class ControladorHorario {
      * @return
      * true, se o horario ja estiver cadastrado, ou false, se a hora nao estiver cadastrado ainda
      */
-    private boolean possuiHorario(Hora inicio, Hora fim) {
-    	for(Horario i: horariosAcesso) {
+    private boolean possuiHorario(Hora inicio, Hora fim, ArrayList<Horario> horarios) {
+    	for(Horario i: horarios) {
     		if(i.getInicio().toString().equals(inicio.toString()) && i.getFim().toString().equals(fim.toString())){
     			return true;
     		}
@@ -265,6 +272,26 @@ public class ControladorHorario {
     	}
     	cargo.getHorariosPermitidos().clear();
     }
+    
+    private boolean possuiHorario(int horaInicio, int minInicio, int horaFim,
+			int minFim, ArrayList<Horario> horarios) {
+    	for(Horario i: horarios) {
+    		if(i.getInicio().getHora() == horaInicio && i.getInicio().getMinuto() == minInicio && i.getFim().getHora() == horaFim && i.getFim().getMinuto() == minFim){
+    			
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+	public void adicionaHorario(int horaInicio, int minInicio, int horaFim,
+			int minFim, ArrayList<Horario> horariosCargo) throws HorarioRepetidoException {
+		if(!possuiHorario(horaInicio, minInicio, horaFim, minFim, horariosCargo) ) {
+			horariosCargo.add(new Horario(horaInicio, minInicio, horaFim, minFim));
+		} else {
+			throw new HorarioRepetidoException();
+		}
+	}
     
     
     
