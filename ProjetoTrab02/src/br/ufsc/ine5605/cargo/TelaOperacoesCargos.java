@@ -34,7 +34,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 	public TelaOperacoesCargos () {
 		
 		super("Operacoes com Cargos");
-		setSize(800, 250);
+		setSize(700, 250);
 		setLocationRelativeTo(null);
 		
 		ButtonActionListener btListener = new ButtonActionListener();
@@ -49,7 +49,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		lbNomeTabela = new JLabel("Cargos Cadastrados");
 		
 		tabelaCargos = new JTable();
-		tabelaCargos.setPreferredScrollableViewportSize(new Dimension(400, 60));
+		tabelaCargos.setPreferredScrollableViewportSize(new Dimension(600, 60));
 		tabelaCargos.setFillsViewportHeight(true);
 		spTabela = new JScrollPane(tabelaCargos);
 		atualizaTabela();
@@ -76,7 +76,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		modeloTabela.addColumn("Cargo");
 		modeloTabela.addColumn("Gerencial?");
 		modeloTabela.addColumn("Acesso?");
-		modeloTabela.addColumn("Horarios");
+		modeloTabela.addColumn("Horarios Permitidos");
 		
 		// o controlador le do arquivo
 		listaTabela = ControladorCargo.getInstance().getListaCargos();
@@ -92,7 +92,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 			String gerencial = c.getEhGerencial() ? "Sim" : "Nao";
 			String acesso = c.getEhGerencial() ? "Sim" : c.getPossuiAcesso() ? "Sim" : "Nao";
 			List<Horario> horarios = c.getHorariosPermitidos(); 
-			modeloTabela.addRow(new Object[] {codigo, nome, gerencial, acesso, horarios.toString()});
+			modeloTabela.addRow(new Object[] {codigo, nome, gerencial, acesso, c.getEhGerencial() ? "Qualquer horario" : horarios.toString()});
 			tabelaCargos.setModel(modeloTabela);
 			this.repaint();
 		}
