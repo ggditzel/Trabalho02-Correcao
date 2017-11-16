@@ -1,8 +1,6 @@
 package br.ufsc.ine5605.cargo;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -40,7 +38,7 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 	private JRadioButton rbNaoAcesso;
 	private ButtonGroup grupoRbAcesso;
 
-	private JButton btCadastrar;
+	private JButton btEditar;
 
 	// dados para formar o cargo
 	private int codigo = -1;
@@ -48,14 +46,20 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 	private boolean ehGerencial = false;
 	private boolean possuiAcesso = false;
 	private ArrayList<Horario> horariosPermitidos = new ArrayList<Horario>();
+	
+	// cargo cujos valores serao editados
+	private Cargo cargoAnterior;
 
-	public TelaAlterarCargo() {
-		super("Cadastro de Cargos");
-				
+	public TelaAlterarCargo(Cargo cargo) {
+		super("Edicao de Cargos");
+		
+		cargoAnterior = cargo;
+		
     	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(400, 250);
-		setAlwaysOnTop(true);
+		//setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
+		
 						
 		ButtonActionListener btListener = new ButtonActionListener();
 		GerencialListener rbGerencialListener = new GerencialListener();
@@ -65,14 +69,14 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(jlPedeNomeCargo, 0, 0, 1, 1);
 		
-		tfPedeNomeCargo = new JTextField("Nome");
+		tfPedeNomeCargo = new JTextField(cargoAnterior.getNome());
 		tfPedeNomeCargo.selectAll();
 		adicionaComponente(tfPedeNomeCargo, 1, 0, 2, 1);
 			
 		jlPedeCodigoCargo = new JLabel("Codigo do cargo");
 		adicionaComponente(jlPedeCodigoCargo, 0, 1, 1, 1);
 		
-		tfPedeCodigoCargo = new JTextField("Codigo");
+		tfPedeCodigoCargo = new JTextField(Integer.toString(cargoAnterior.getCodigo()));
 		tfPedeCodigoCargo.selectAll();
 		adicionaComponente(tfPedeCodigoCargo, 1, 1, 2, 1);
 		
@@ -81,10 +85,10 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		adicionaComponente(lbGerencial, 0, 2, 1, 1);
 		
 		
-		rbSimGerencial = new JRadioButton("Sim", false);
+		rbSimGerencial = new JRadioButton("Sim", cargoAnterior.getEhGerencial());
 		adicionaComponente(rbSimGerencial, 1, 2, 1, 1);
 		
-		rbNaoGerencial = new JRadioButton("Nao", true);
+		rbNaoGerencial = new JRadioButton("Nao", !cargoAnterior.getEhGerencial());
 		adicionaComponente(rbNaoGerencial, 2, 2, 1, 1);
 		
 		grupoRbGerencial = new ButtonGroup();
@@ -96,11 +100,17 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		lbAcesso = new JLabel("Este cargo possui acesso?");
 		adicionaComponente(lbAcesso, 0, 3, 1, 1);
 		
-		rbSimAcesso = new JRadioButton("Sim", false);
+		rbSimAcesso = new JRadioButton("Sim", cargoAnterior.getPossuiAcesso());
 		adicionaComponente(rbSimAcesso, 1, 3, 1, 1);
 		
-		rbNaoAcesso = new JRadioButton("Nao", true);
+		rbNaoAcesso = new JRadioButton("Nao", !cargoAnterior.getPossuiAcesso());
 		adicionaComponente(rbNaoAcesso, 2, 3, 1, 1);
+		
+		if (cargoAnterior.getEhGerencial()) {
+			lbAcesso.setEnabled(false);
+			rbSimAcesso.setEnabled(false);
+			rbNaoAcesso.setEnabled(false);
+		}
 		
 		grupoRbAcesso = new ButtonGroup();
 		grupoRbAcesso.add(rbNaoAcesso);
@@ -108,25 +118,13 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		rbSimAcesso.addItemListener(rbAcessoListener);
 		rbNaoAcesso.addItemListener(rbAcessoListener);
 
-		btCadastrar = new JButton("Cadastrar");
-		adicionaComponente(btCadastrar, 0, 4, 3, 1);
+		btEditar = new JButton("Alterar");
+		adicionaComponente(btEditar, 0, 4, 3, 1);
 		
-		btCadastrar.addActionListener(btListener);
+		btEditar.addActionListener(btListener);
 		
-		jlMensagem = new JLabel("(PARA FINALIZAR OS CADASTROS, FECHE A JANELA)");
-		adicionaComponente(jlMensagem, 0, 5, 3, 1);
-	}
-
-	private void valoresDefaultJanela() {
-		tfPedeNomeCargo.setText("Nome");
-		tfPedeNomeCargo.selectAll();
-		tfPedeNomeCargo.requestFocusInWindow();
-		tfPedeCodigoCargo.setText("Codigo");
-		tfPedeCodigoCargo.selectAll();
-		rbSimGerencial.setSelected(false);
-		rbNaoGerencial.setSelected(true);
-		rbSimAcesso.setSelected(false);
-		rbNaoAcesso.setSelected(true);
+		//jlMensagem = new JLabel("(PARA FINALIZAR, FECHE A JANELA)");
+		//adicionaComponente(jlMensagem, 0, 5, 3, 1);
 	}
 	
 	private class ButtonActionListener implements ActionListener {
@@ -135,7 +133,7 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		public void actionPerformed(ActionEvent evento) {
 			boolean abortaCadastro = false;
 
-			if (evento.getSource() == btCadastrar) {
+			if (evento.getSource() == btEditar) {
 				try {
 					codigo = Integer.parseInt(tfPedeCodigoCargo.getText());
 				} catch (NumberFormatException e) {
@@ -151,8 +149,9 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 					if(!ehGerencial && possuiAcesso){
 						horariosPermitidos = ControladorCargo.getInstance().pegaHorarios();
 					}
+					ControladorCargo.getInstance().excluirCargo(cargoAnterior.getCodigo());
 					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
-					valoresDefaultJanela();
+					dispose();
 				}
 			}
 		}

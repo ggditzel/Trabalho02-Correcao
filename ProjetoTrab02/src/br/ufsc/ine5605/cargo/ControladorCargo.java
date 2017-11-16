@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
-import br.ufsc.ine5605.funcionario.ControladorFuncionario;
 import br.ufsc.ine5605.horario.ControladorHorario;
 import br.ufsc.ine5605.horario.Horario;
 
@@ -142,6 +141,11 @@ public class ControladorCargo {
     	telaCadastroCargo = new TelaCadastroCargo();
 		telaCadastroCargo.setVisible(true);
     }
+    
+    public void alterarCargo(int codigo) {
+    	TelaAlterarCargo telaAlterarCargo = new TelaAlterarCargo(findCargoByCodigo(codigo));
+    	telaAlterarCargo.setVisible(true);
+    }
 		
     	
 	public void incluirCargo(DadosCadastroCargo cargo) { 
@@ -196,35 +200,29 @@ public class ControladorCargo {
 	}
 	
 	public Cargo findCargoByCodigo(int codigo){
-		Cargo cargo = null;
-		for (Cargo c: listaCargos){
-			if (c.getCodigo() == codigo){
-				cargo = c;
-			}
-		}
-		return cargo;
+		return mapeador.get(codigo);
 	}
 
 	/**
 	 * Permite editar as informacoes de cargo.
 	 * Opcoes: "Voltar", "Alterar Descricao", "Alterar status gerencial", "Alterar status de acesso", "Alterar Horarios de Acesso" 
 	 */
-    private void alterarCargo() {
-        int opcao = tela.mostraMenu(opcoesMenuEditarCargo);
-        switch (opcao){
-            case 0:
-                break;
-            case 1:
-                alterarDescricao();
-                break;
-            case 2:
-                alterarStatus();
-                break;
-            case 3:
-                alterarHorarios();
-                break;
-        }
-    }
+//    private void alterarCargo() {
+//        int opcao = tela.mostraMenu(opcoesMenuEditarCargo);
+//        switch (opcao){
+//            case 0:
+//                break;
+//            case 1:
+//                alterarDescricao();
+//                break;
+//            case 2:
+//                alterarStatus();
+//                break;
+//            case 3:
+//                alterarHorarios();
+//                break;
+//        }
+//    }
 
 	public ArrayList<Horario> pegaHorarios() {
 		
