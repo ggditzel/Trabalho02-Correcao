@@ -377,8 +377,8 @@ public class ControladorFuncionario {
 	}
 	public boolean novoIncluirFuncionario(DadosCadastroFuncionario funcionario) {
 		boolean retorno = false;
-		Funcionario funcTemp = funcionario;
-		if()
+		Funcionario funcTemp = new Funcionario(funcionario.matricula, funcionario.nome,  funcionario.cargo, funcionario.telefone, funcionario.dataNascimento, funcionario.salario  );
+		listaFuncionarios.add(funcTemp);
 		return retorno;
 	}
 }

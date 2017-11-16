@@ -139,10 +139,16 @@ public class TelaCadastroFuncionario extends TelaComGridBagLayout {
 				
 				nome = tfEntraNome.getText();
 				
+				if ((!abortaCadastro) && (ControladorFuncionario.getInstance().findFuncionarioByMatricula(matricula) != null)) {
+					JOptionPane.showMessageDialog(null, "Numero de matricula indisponivel", "favor digitar outro", JOptionPane.ERROR_MESSAGE);
+					
+					
+				}
 				
-				if (!abortaCadastro){
-					ControladorFuncionario.getInstance().incluirFuncionario(new DadosCadastroFuncionario(matricula, nome, cargo, telefone, dataNascimento, salario));
-					valoresDefaultJanela();
+				
+				if ((!abortaCadastro) && (ControladorFuncionario.getInstance().findFuncionarioByMatricula(matricula) != null)){
+					ControladorFuncionario.getInstance().novoIncluirFuncionario(new DadosCadastroFuncionario(matricula, nome, cargo, telefone, dataNascimento, salario));
+					JOptionPane.showMessageDialog(null, "Funcionario cadastrado com sucesso");
 				}
 			}
 		}
