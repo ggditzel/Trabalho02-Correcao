@@ -38,6 +38,7 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 	private JRadioButton rbNaoAcesso;
 	private ButtonGroup grupoRbAcesso;
 
+	private JButton btHorarios = new JButton("Castrar Horarios");;
 	private JButton btEditar;
 
 	// dados para formar o cargo
@@ -53,7 +54,7 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 	public TelaAlterarCargo(Cargo cargo) {
 		super("Edicao de Cargos");
 		
-		cargoAnterior = cargo;
+		this.cargoAnterior = cargo;
 		
     	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(400, 250);
@@ -106,10 +107,14 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		rbNaoAcesso = new JRadioButton("Nao", !cargoAnterior.getPossuiAcesso());
 		adicionaComponente(rbNaoAcesso, 2, 3, 1, 1);
 		
-		if (cargoAnterior.getEhGerencial()) {
-			lbAcesso.setEnabled(false);
-			rbSimAcesso.setEnabled(false);
-			rbNaoAcesso.setEnabled(false);
+		if (!cargoAnterior.getEhGerencial()) {
+			if (cargoAnterior.getPossuiAcesso()) {
+				btHorarios.setVisible(true);
+				btHorarios.setEnabled(true);
+			} else {
+				btHorarios.setVisible(false);
+				btHorarios.setEnabled(false);
+			}
 		}
 		
 		grupoRbAcesso = new ButtonGroup();
@@ -118,13 +123,14 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		rbSimAcesso.addItemListener(rbAcessoListener);
 		rbNaoAcesso.addItemListener(rbAcessoListener);
 
-		btEditar = new JButton("Alterar");
-		adicionaComponente(btEditar, 0, 4, 3, 1);
+		//btHorarios = new JButton("Castrar Horarios");
+		btHorarios.addActionListener(btListener);
+		adicionaComponente(btHorarios, 0, 4, 3, 1);
 		
+		btEditar = new JButton("Alterar");
+		adicionaComponente(btEditar, 0, 5, 3, 1);
 		btEditar.addActionListener(btListener);
 		
-		//jlMensagem = new JLabel("(PARA FINALIZAR, FECHE A JANELA)");
-		//adicionaComponente(jlMensagem, 0, 5, 3, 1);
 	}
 	
 	private class ButtonActionListener implements ActionListener {
@@ -133,6 +139,10 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		public void actionPerformed(ActionEvent evento) {
 			boolean abortaCadastro = false;
 
+			if (evento.getSource() == btHorarios) {
+				horariosPermitidos = ControladorCargo.getInstance().pegaHorarios();
+			}
+			
 			if (evento.getSource() == btEditar) {
 				try {
 					codigo = Integer.parseInt(tfPedeCodigoCargo.getText());
@@ -146,9 +156,6 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 				possuiAcesso = rbSimAcesso.isSelected();
 				
 				if (!abortaCadastro){
-					if(!ehGerencial && possuiAcesso){
-						horariosPermitidos = ControladorCargo.getInstance().pegaHorarios();
-					}
 					ControladorCargo.getInstance().excluirCargo(cargoAnterior.getCodigo());
 					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
 					dispose();
@@ -166,11 +173,20 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 					lbAcesso.setEnabled(false);
 					rbSimAcesso.setEnabled(false);
 					rbNaoAcesso.setEnabled(false);
+					btHorarios.setVisible(false);
+					btHorarios.setEnabled(false);
 				}
-				if (!rbSimGerencial.isSelected()) {
+				if (rbNaoGerencial.isSelected()) {
 					lbAcesso.setEnabled(true);
 					rbSimAcesso.setEnabled(true);
 					rbNaoAcesso.setEnabled(true);
+					if (rbSimAcesso.isSelected()) {
+						btHorarios.setVisible(true);
+						btHorarios.setEnabled(true);
+					} else {
+						btHorarios.setVisible(false);
+						btHorarios.setEnabled(false);
+					}
 				}
 			}
 		}
@@ -183,7 +199,13 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		public void itemStateChanged(ItemEvent evento) {
 			if (evento.getStateChange() == ItemEvent.SELECTED) {
 				if (rbSimAcesso.isSelected()) {
-					//horariosPermitidos = ControladorHorario.getInstance().iniciaCadastro();
+					btHorarios.setVisible(true);
+					btHorarios.setEnabled(true);
+				}
+				
+				if (rbNaoAcesso.isSelected()) {
+					btHorarios.setVisible(false);
+					btHorarios.setEnabled(false);
 				}
 			}
 		}

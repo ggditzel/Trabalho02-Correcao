@@ -40,7 +40,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 	private JRadioButton rbNaoAcesso;
 	private ButtonGroup grupoRbAcesso;
 
-	private JButton btHorarios;;
+	private JButton btHorarios = new JButton("Castrar Horarios");
 	private JButton btCadastrar;
 
 	// dados para formar o cargo
@@ -109,7 +109,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 		rbSimAcesso.addItemListener(rbAcessoListener);
 		rbNaoAcesso.addItemListener(rbAcessoListener);
 
-		btHorarios = new JButton("Castrar Horarios");
+		//btHorarios = new JButton("Castrar Horarios");
 		btHorarios.addActionListener(btListener);
 		adicionaComponente(btHorarios, 0, 4, 3, 1);
 		btHorarios.setVisible(false);
@@ -159,9 +159,6 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 				possuiAcesso = rbSimAcesso.isSelected();
 				
 				if (!abortaCadastro){
-					if(!ehGerencial && possuiAcesso){
-						
-					}
 					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
 					valoresDefaultJanela();
 				}
@@ -178,13 +175,20 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 					lbAcesso.setEnabled(false);
 					rbSimAcesso.setEnabled(false);
 					rbNaoAcesso.setEnabled(false);
+					btHorarios.setVisible(false);
+					btHorarios.setEnabled(false);
 				}
-				if (!rbSimGerencial.isSelected()) {
+				if (rbNaoGerencial.isSelected()) {
 					lbAcesso.setEnabled(true);
 					rbSimAcesso.setEnabled(true);
 					rbNaoAcesso.setEnabled(true);
-					btHorarios.setVisible(false);
-					btHorarios.setEnabled(false);
+					if (rbSimAcesso.isSelected()) {
+						btHorarios.setVisible(true);
+						btHorarios.setEnabled(true);
+					} else {
+						btHorarios.setVisible(false);
+						btHorarios.setEnabled(false);
+					}
 				}
 			}
 		}
