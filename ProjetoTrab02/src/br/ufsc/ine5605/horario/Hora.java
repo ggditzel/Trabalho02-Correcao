@@ -1,9 +1,10 @@
 package br.ufsc.ine5605.horario;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Hora {
+public class Hora implements Serializable{
     private int hora;
     private int minuto;
     

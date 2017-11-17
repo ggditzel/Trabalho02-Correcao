@@ -1,7 +1,8 @@
 package br.ufsc.ine5605.horario;
 
+import java.io.Serializable;
 
-public class Horario {
+public class Horario implements Serializable{
     private Hora inicio;
     private Hora fim;
 

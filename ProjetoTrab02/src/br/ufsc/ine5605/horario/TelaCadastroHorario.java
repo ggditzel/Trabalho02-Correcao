@@ -44,7 +44,7 @@ public class TelaCadastroHorario extends TelaComGridBagLayout {
 		}
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(600, 200);
-		setAlwaysOnTop(true);
+		//setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 
 		

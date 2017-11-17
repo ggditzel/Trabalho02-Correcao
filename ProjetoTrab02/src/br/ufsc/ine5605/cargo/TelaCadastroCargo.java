@@ -149,7 +149,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 				
 				if (!abortaCadastro){
 					if(!ehGerencial && possuiAcesso){
-						horariosPermitidos = ControladorCargo.getInstance().pegaHorarios();
+						
 					}
 					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
 					valoresDefaultJanela();
@@ -184,7 +184,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 		public void itemStateChanged(ItemEvent evento) {
 			if (evento.getStateChange() == ItemEvent.SELECTED) {
 				if (rbSimAcesso.isSelected()) {
-					//horariosPermitidos = ControladorHorario.getInstance().iniciaCadastro();
+					horariosPermitidos = ControladorCargo.getInstance().pegaHorarios();
 				}
 			}
 		}
