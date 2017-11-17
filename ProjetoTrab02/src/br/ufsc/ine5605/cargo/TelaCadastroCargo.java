@@ -158,6 +158,11 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 				ehGerencial = rbSimGerencial.isSelected();
 				possuiAcesso = rbSimAcesso.isSelected();
 				
+				if (possuiAcesso && horariosPermitidos.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Cargo com permissao de acesso, mas sem horarios permitidos cadastrados. Cadastrar horario antes de prosseguir ao cadastro do cargo", "Solicitacao para cadastro de horario", JOptionPane.ERROR_MESSAGE);
+					abortaCadastro = true;
+				}
+				
 				if (!abortaCadastro){
 					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
 					valoresDefaultJanela();
