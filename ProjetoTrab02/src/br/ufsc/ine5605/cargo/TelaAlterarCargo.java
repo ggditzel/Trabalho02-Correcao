@@ -92,6 +92,8 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		rbNaoGerencial = new JRadioButton("Nao", !cargoAnterior.getEhGerencial());
 		adicionaComponente(rbNaoGerencial, 2, 2, 1, 1);
 		
+		horariosPermitidos = cargoAnterior.getHorariosPermitidos();
+		
 		grupoRbGerencial = new ButtonGroup();
 		grupoRbGerencial.add(rbNaoGerencial);
 		grupoRbGerencial.add(rbSimGerencial);
@@ -154,6 +156,11 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 				nome = tfPedeNomeCargo.getText();
 				ehGerencial = rbSimGerencial.isSelected();
 				possuiAcesso = rbSimAcesso.isSelected();
+				
+				if (possuiAcesso && horariosPermitidos.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Cargo com permissao de acesso, mas sem horarios permitidos cadastrados. Cadastrar horario antes de prosseguir ao cadastro do cargo", "Solicitacao para cadastro de horario", JOptionPane.ERROR_MESSAGE);
+					abortaCadastro = true;
+				}
 				
 				if (!abortaCadastro){
 					ControladorCargo.getInstance().excluirCargo(cargoAnterior.getCodigo());
