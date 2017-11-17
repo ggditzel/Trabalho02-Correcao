@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -106,14 +107,23 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 			if(e.getSource() == btCadastrar) {
 				ControladorCargo.getInstance().telaIncluirCargo();
 			} else if(e.getSource() == btExcluir) {
-				int linha = tabelaCargos.getSelectedRow();
-				int codigo = (int) tabelaCargos.getValueAt(linha, 0);
-				ControladorCargo.getInstance().excluirCargo(codigo);
+				try {
+					int linha = tabelaCargos.getSelectedRow();
+					int codigo = (int) tabelaCargos.getValueAt(linha, 0);
+					ControladorCargo.getInstance().excluirCargo(codigo);
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Selecione um cargo da lista", "Cargo Nao Selecionado", JOptionPane.ERROR_MESSAGE);
+				}
 				atualizaTabela();
 			} else if(e.getSource() == btEditar) {
-				int linha = tabelaCargos.getSelectedRow();
-				int codigo = (int) tabelaCargos.getValueAt(linha, 0);
-				ControladorCargo.getInstance().alterarCargo(codigo);
+				
+				try {
+					int linha = tabelaCargos.getSelectedRow();
+					int codigo = (int) tabelaCargos.getValueAt(linha, 0);
+					ControladorCargo.getInstance().alterarCargo(codigo);
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Selecione um cargo da lista", "Cargo Nao Selecionado", JOptionPane.ERROR_MESSAGE);
+				}
 				
 			} else if(e.getSource() == btAtualizar){
 				atualizaTabela();
