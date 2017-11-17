@@ -40,6 +40,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 	private JRadioButton rbNaoAcesso;
 	private ButtonGroup grupoRbAcesso;
 
+	private JButton btHorarios;;
 	private JButton btCadastrar;
 
 	// dados para formar o cargo
@@ -108,13 +109,19 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 		rbSimAcesso.addItemListener(rbAcessoListener);
 		rbNaoAcesso.addItemListener(rbAcessoListener);
 
-		btCadastrar = new JButton("Cadastrar");
-		adicionaComponente(btCadastrar, 0, 4, 3, 1);
+		btHorarios = new JButton("Castrar Horarios");
+		btHorarios.addActionListener(btListener);
+		adicionaComponente(btHorarios, 0, 4, 3, 1);
+		btHorarios.setVisible(false);
+		btHorarios.setEnabled(false);
 		
+		btCadastrar = new JButton("Cadastrar Cargo");
 		btCadastrar.addActionListener(btListener);
+		adicionaComponente(btCadastrar, 0, 5, 3, 1);
+		
 		
 		jlMensagem = new JLabel("(PARA FINALIZAR OS CADASTROS, FECHE A JANELA)");
-		adicionaComponente(jlMensagem, 0, 5, 3, 1);
+		adicionaComponente(jlMensagem, 0, 6, 3, 1);
 	}
 
 	private void valoresDefaultJanela() {
@@ -134,7 +141,11 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 		@Override
 		public void actionPerformed(ActionEvent evento) {
 			boolean abortaCadastro = false;
-
+			
+			if (evento.getSource() == btHorarios) {
+				horariosPermitidos = ControladorCargo.getInstance().pegaHorarios();
+			}
+			
 			if (evento.getSource() == btCadastrar) {
 				try {
 					codigo = Integer.parseInt(tfPedeCodigoCargo.getText());
@@ -172,6 +183,8 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 					lbAcesso.setEnabled(true);
 					rbSimAcesso.setEnabled(true);
 					rbNaoAcesso.setEnabled(true);
+					btHorarios.setVisible(false);
+					btHorarios.setEnabled(false);
 				}
 			}
 		}
@@ -184,7 +197,13 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 		public void itemStateChanged(ItemEvent evento) {
 			if (evento.getStateChange() == ItemEvent.SELECTED) {
 				if (rbSimAcesso.isSelected()) {
-					horariosPermitidos = ControladorCargo.getInstance().pegaHorarios();
+					btHorarios.setVisible(true);
+					btHorarios.setEnabled(true);
+				}
+				
+				if (rbNaoAcesso.isSelected()) {
+					btHorarios.setVisible(false);
+					btHorarios.setEnabled(false);
 				}
 			}
 		}
