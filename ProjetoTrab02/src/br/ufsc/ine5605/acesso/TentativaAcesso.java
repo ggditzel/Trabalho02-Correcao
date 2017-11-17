@@ -1,17 +1,22 @@
 package br.ufsc.ine5605.acesso;
 
+import java.io.Serializable;
+
+import br.ufsc.ine5605.Mapeavel;
 import br.ufsc.ine5605.horario.Hora;
 
-public abstract class TentativaAcesso {
+public abstract class TentativaAcesso implements Serializable, Mapeavel<Integer>{
 	protected String data;
 	protected Hora hora;
 	protected int matricula;
+	protected Integer id;
 	
 	
-	public TentativaAcesso(String data, Hora hora, int matricula) {
+	public TentativaAcesso(String data, Hora hora, int matricula, int id) {
 		this.data = data;
 		this.hora = hora;
 		this.matricula = matricula;
+		this.id = id;
 	}
 	
 	public String getData() {
@@ -33,5 +38,11 @@ public abstract class TentativaAcesso {
 		this.matricula = matricula;
 	}
 
+	public Integer getID() {
+		return id;
+	}
+	public void setID() {
+		this.id = id;
+	}
 	
 }

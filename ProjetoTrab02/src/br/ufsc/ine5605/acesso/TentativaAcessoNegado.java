@@ -1,5 +1,7 @@
 package br.ufsc.ine5605.acesso;
 
+import java.io.Serializable;
+
 import br.ufsc.ine5605.horario.Hora;
 
 public class TentativaAcessoNegado extends TentativaAcesso {
@@ -7,8 +9,8 @@ public class TentativaAcessoNegado extends TentativaAcesso {
 	private MotivoNegacaoAcesso motivo;
 	
 	public TentativaAcessoNegado(String data, Hora hora, int matricula,
-			MotivoNegacaoAcesso motivo) {
-		super(data, hora, matricula);
+			MotivoNegacaoAcesso motivo, int id) {
+		super(data, hora, matricula, id);
 		this.motivo = motivo;
 
 	}

@@ -92,7 +92,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 			String gerencial = c.getEhGerencial() ? "Sim" : "Nao";
 			String acesso = c.getEhGerencial() ? "Sim" : c.getPossuiAcesso() ? "Sim" : "Nao";
 			List<Horario> horarios = c.getHorariosPermitidos(); 
-			modeloTabela.addRow(new Object[] {codigo, nome, gerencial, acesso, c.getEhGerencial() ? "Qualquer horario" : horarios.toString()});
+			modeloTabela.addRow(new Object[] {codigo, nome, gerencial, acesso, c.getEhGerencial() ? "Qualquer horario" : !c.getPossuiAcesso()? "Nenhum horario" : horarios.toString()});
 			tabelaCargos.setModel(modeloTabela);
 			this.repaint();
 		}

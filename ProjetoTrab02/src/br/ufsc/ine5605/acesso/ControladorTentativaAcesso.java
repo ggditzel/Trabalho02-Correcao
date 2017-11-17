@@ -2,6 +2,7 @@ package br.ufsc.ine5605.acesso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import br.ufsc.ine5605.funcionario.ControladorFuncionario;
 import br.ufsc.ine5605.funcionario.Funcionario;
@@ -14,11 +15,16 @@ public class ControladorTentativaAcesso {
 	private ArrayList<TentativaAcesso> tentativas;
 	private static ControladorTentativaAcesso instancia;
 	private TelaAcesso telaAcesso;
+	private TelaRelatorios telaRelatorios;
+	private int ultimoIDtentativa;
+	private MapeadorTentativaAcesso mapeador;
     
     private ControladorTentativaAcesso() {
     	tentativas = new ArrayList<>();
         tela = new TelaTentativaAcesso();
         telaAcesso = new TelaAcesso();
+        mapeador = new MapeadorTentativaAcesso();
+        ultimoIDtentativa = mapeador.getList().size();
     }
     public static ControladorTentativaAcesso getInstance(){
     	if(instancia == null){
@@ -73,7 +79,12 @@ public class ControladorTentativaAcesso {
 	* Chama a tela relacionada ao menu de tentativas e direciona de acordo com a resposta do usuario
 	*/
 	public void menuRelatorioTentativas(){
-		while(true){
+		if(telaRelatorios == null) {
+			telaRelatorios = new TelaRelatorios();
+		}
+		telaRelatorios.setVisible(true);
+		
+		/*while(true){
 		int opcao = tela.mostraMenuTentativas();
 		switch(opcao){
 				
@@ -107,14 +118,16 @@ public class ControladorTentativaAcesso {
 					tela.listaTentativas(findTentativasNegadasByMotivo(motivo));
 					break;
 			}
-		}
+		}*/
+		
 		
 	}
 	
 	
 	public ArrayList<TentativaAcesso> getTentativasNegadas() {
 		ArrayList<TentativaAcesso> tentativasNegadas = new ArrayList<>();
-		for(TentativaAcesso t: tentativas){
+		
+		for(TentativaAcesso t: mapeador.getList()){
 			if(t instanceof TentativaAcessoNegado){
 				tentativasNegadas.add(t);
 			}
@@ -124,7 +137,7 @@ public class ControladorTentativaAcesso {
 	
 	public ArrayList<TentativaAcesso> getAcessos() {
 		ArrayList<TentativaAcesso> acessos = new ArrayList<>();
-		for(TentativaAcesso t: tentativas){
+		for(TentativaAcesso t: mapeador.getList()){
 			if(t instanceof TentativaAcessoPermitido){
 				acessos.add(t);
 			}
@@ -140,7 +153,7 @@ public class ControladorTentativaAcesso {
 	*/
 	public ArrayList<TentativaAcesso> findTentativasByMatricula(int matricula) {
 		ArrayList<TentativaAcesso> tentativasDaMatricula = new ArrayList<>();
-		for(TentativaAcesso t: tentativas) {
+		for(TentativaAcesso t: mapeador.getList()) {
 			if(t.getMatricula() == matricula) {
 				tentativasDaMatricula.add(t);
 			}
@@ -188,7 +201,7 @@ public class ControladorTentativaAcesso {
 	*/
 	public ArrayList<TentativaAcesso> findTentativasNegadasByMotivo(MotivoNegacaoAcesso motivo) {
 		ArrayList<TentativaAcesso> tentativasDoMotivo = new ArrayList<>();
-		for(TentativaAcesso t: tentativas) {
+		for(TentativaAcesso t: mapeador.getList()) {
 			if(t instanceof TentativaAcessoNegado) {	
 				if(((TentativaAcessoNegado) (t)).getMotivo().equals(motivo)){
 					tentativasDoMotivo.add(t);
@@ -205,28 +218,42 @@ public class ControladorTentativaAcesso {
 		hora = ControladorHorario.getInstance().converte(formata.format(agora));
 		Funcionario funcionario = ControladorFuncionario.getInstance().findFuncionarioByMatricula(matricula);
 		if(funcionario == null) {
-			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.MATRICULA_INEXISTENTE) );
+			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.MATRICULA_INEXISTENTE, ultimoIDtentativa + 1) );
+			mapeador.put(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.MATRICULA_INEXISTENTE, ultimoIDtentativa + 1));
 			telaAcesso.mostraNegacao(MotivoNegacaoAcesso.MATRICULA_INEXISTENTE);
 		} else if(!funcionario.getCargo().getPossuiAcesso() && !funcionario.getCargo().getEhGerencial()){
-			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.NAO_POSSUI_ACESSO) );
+			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.NAO_POSSUI_ACESSO, ultimoIDtentativa + 1) );
+			mapeador.put(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.NAO_POSSUI_ACESSO, ultimoIDtentativa + 1) );
 			funcionario.setNumeroAcessosNegados(funcionario.getNumeroAcessosNegados() + 1);
 			telaAcesso.mostraNegacao(MotivoNegacaoAcesso.NAO_POSSUI_ACESSO);
 		} else if(funcionario.getNumeroAcessosNegados() >= 3) {
-			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.ACESSO_BLOQUEADO) );
+			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.ACESSO_BLOQUEADO, ultimoIDtentativa + 1) );
+			mapeador.put(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.ACESSO_BLOQUEADO, ultimoIDtentativa + 1) );
 			funcionario.setNumeroAcessosNegados(funcionario.getNumeroAcessosNegados() + 1);
 			telaAcesso.mostraNegacao(MotivoNegacaoAcesso.ACESSO_BLOQUEADO);
 		} else if(!funcionario.getCargo().getEhGerencial() && !hora.estaPresente(funcionario.getCargo().getHorariosPermitidos()) ) {
-			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.HORARIO_NAO_PERMITIDO) );
+			tentativas.add(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.HORARIO_NAO_PERMITIDO, ultimoIDtentativa + 1) );
+			mapeador.put(new TentativaAcessoNegado(data, hora, matricula, MotivoNegacaoAcesso.HORARIO_NAO_PERMITIDO, ultimoIDtentativa + 1) );
 			funcionario.setNumeroAcessosNegados(funcionario.getNumeroAcessosNegados() + 1);
 			telaAcesso.mostraNegacao(MotivoNegacaoAcesso.HORARIO_NAO_PERMITIDO);
 		}  else {
-			tentativas.add(new TentativaAcessoPermitido(data, hora, matricula));
+			tentativas.add(new TentativaAcessoPermitido(data, hora, matricula, ultimoIDtentativa + 1));
+			mapeador.put(new TentativaAcessoPermitido(data, hora, matricula, ultimoIDtentativa + 1));
 			telaAcesso.confirmaAcesso();
 		}
+		ultimoIDtentativa++;
 		
 	}
 	public Hora converteHora(String hora) {
 		return ControladorHorario.getInstance().converte(hora);
+	}
+	public Collection<TentativaAcesso> getTentativas() {
+		return mapeador.getList();
+	}
+	public Collection<TentativaAcesso> findTentativasByMotivo(
+			MotivoNegacaoAcesso selectedItem) {
+	
+		return null;
 	}
 	
 
