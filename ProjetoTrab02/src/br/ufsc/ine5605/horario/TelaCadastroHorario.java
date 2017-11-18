@@ -3,6 +3,8 @@ package br.ufsc.ine5605.horario;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -42,7 +44,17 @@ public class TelaCadastroHorario extends TelaComGridBagLayout {
 		for(int i = 0; i < 60; i++) {
 			minutos[i] = i;
 		}
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent wev){
+				if (!horarios.isEmpty()) {
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog(null, "Este cargo precisa de horario de acesso", "Erro no cadastro de horario", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		setSize(600, 200);
 		//setAlwaysOnTop(true);
 		setLocationRelativeTo(null);

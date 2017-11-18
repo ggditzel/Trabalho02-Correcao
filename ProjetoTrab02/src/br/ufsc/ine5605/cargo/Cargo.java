@@ -55,4 +55,8 @@ public class Cargo implements ICargo, Serializable{
 		return horariosPermitidos;
 	}
 	
+	public String toString() {
+		return this.nome;
+	}
+	
 }

@@ -37,8 +37,8 @@ public class MapeadorGenerico<K, T extends Mapeavel<K>> {
 	        return cache.values();
 	    }
 	   
-	    public void remove(Cargo cargo){
-	    	cache.remove(cargo.getCodigo());
+	    public void remove(T objeto){
+	    	cache.remove(objeto.getID());
 	        persist();
 	    }
 	    

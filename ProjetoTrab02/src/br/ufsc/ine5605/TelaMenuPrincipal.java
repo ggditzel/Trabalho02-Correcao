@@ -1,5 +1,6 @@
 package br.ufsc.ine5605;
 
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,7 +18,7 @@ public class TelaMenuPrincipal extends TelaComGridBagLayout {
 		super("Menu Principal");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(400, 250);
+		setSize(600, 375);
 		//setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		//setVisible(true);
@@ -32,8 +33,11 @@ public class TelaMenuPrincipal extends TelaComGridBagLayout {
 		btAcessarSala = new JButton("Acessar o financeiro");
 		btAcessarSala.addActionListener(btListener);
 		
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(lbPergunta, 0, 0, 1, 1);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(btGerenciarSistema, 0, 1, 1, 1);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(btAcessarSala, 0, 2, 1, 1);
 		repaint();
 	}

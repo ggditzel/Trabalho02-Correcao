@@ -1,5 +1,6 @@
 package br.ufsc.ine5605;
 
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -30,14 +31,17 @@ public class TelaGerenciarSistema extends TelaComGridBagLayout {
 
 		btOperacoesCargos = new JButton("Operacoes com Cargos");
 		btOperacoesCargos.addActionListener(btListener);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(btOperacoesCargos, 0, 0, 1, 1);
 		
 		btOperacoesFuncionarios = new JButton("Operacoes com Funcionarios");
 		btOperacoesFuncionarios.addActionListener(btListener);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(btOperacoesFuncionarios, 0, 1, 1, 1);
 		
 		btRelatoriosAcesso = new JButton("Relatorios de Acesso");
 		btRelatoriosAcesso.addActionListener(btListener);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(btRelatoriosAcesso, 0, 2, 1, 1);
 		
 	}
