@@ -3,9 +3,10 @@ package br.ufsc.ine5605.cargo;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import br.ufsc.ine5605.Mapeavel;
 import br.ufsc.ine5605.horario.Horario;
 
-public class Cargo implements ICargo, Serializable{
+public class Cargo implements ICargo, Serializable, Mapeavel<Integer>{
 	private int codigo;
 	private String nome;
 	private boolean ehGerencial;
@@ -57,6 +58,10 @@ public class Cargo implements ICargo, Serializable{
 	
 	public String toString() {
 		return this.nome;
+	}
+	@Override
+	public Integer getID() {
+		return this.codigo;
 	}
 	
 }
