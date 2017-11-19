@@ -1,8 +1,10 @@
 package br.ufsc.ine5605.funcionario;
 
+import java.io.Serializable;
+
 import br.ufsc.ine5605.cargo.Cargo;
 
-public class Funcionario {
+public class Funcionario implements Serializable{
 	private int matricula;
 	private String nome;
 	private Cargo cargo;

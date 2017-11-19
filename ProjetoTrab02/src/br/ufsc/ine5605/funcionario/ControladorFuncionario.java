@@ -1,14 +1,23 @@
 package br.ufsc.ine5605.funcionario;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import br.ufsc.ine5605.cargo.Cargo;
 import br.ufsc.ine5605.cargo.ControladorCargo;
 
 public class ControladorFuncionario {
-	private ArrayList<Funcionario> listaFuncionarios;
+	private MapeadorFuncionario mapeadorF;
+	private Collection<Funcionario> listaFuncionarios;
+	private Collection<Funcionario> listaFuncEdit;
 	private static ControladorFuncionario instancia;
 	private TelaFuncionario tela;
-	private TelaCadastroFuncionario telaCadastroFuncionario;
+	private TelaInformFuncionario telaCadastroFuncionario;
+	private TelaInformFuncionario telaEditFuncionario;
+	private TelaOperacoesFuncionarios telaOperacoesFuncionarios;
 
 	/****** OPCOES DO MENU PRINCIPAL ******/
 	private final String[] opcoesMenuPrincipal = { "Voltar", "Listar Funcionarios Cadastrados", "Cadastrar Funcionario",
@@ -20,7 +29,7 @@ public class ControladorFuncionario {
 
 	private ControladorFuncionario() {
 		this.listaFuncionarios = new ArrayList<>();
-		tela = new TelaFuncionario();
+		mapeadorF = new MapeadorFuncionario();
 	}
 
 	public static ControladorFuncionario getInstance() {
@@ -28,6 +37,10 @@ public class ControladorFuncionario {
 			instancia = new ControladorFuncionario();
 		}
 		return instancia;
+	}
+
+	public Collection<Funcionario> getListaFuncionarios() {
+		return mapeadorF.getList();
 	}
 
 	public void incluirFuncionario() {
@@ -64,14 +77,14 @@ public class ControladorFuncionario {
 				incluirFuncionario();
 				break;
 			case 3:
-				if(!listaFuncionarios.isEmpty()){
+				if (!listaFuncionarios.isEmpty()) {
 					excluirFuncionario();
 				} else {
 					tela.mostraMensagem("Nao ha funcionarios para serem excluidos");
 				}
 				break;
 			case 4:
-				if(!listaFuncionarios.isEmpty()){
+				if (!listaFuncionarios.isEmpty()) {
 					alterarCadastroFuncionario();
 				} else {
 					tela.mostraMensagem("Nao ha funcionarios para editar");
@@ -96,8 +109,7 @@ public class ControladorFuncionario {
 			case 1:
 				printarFuncionariosCompleto();
 				boolean eae1 = false;
-				tela.mostraMensagem(
-						"Digite a matricula(vide lista) do funcionario cuja matricula sera alterada");
+				tela.mostraMensagem("Digite a matricula(vide lista) do funcionario cuja matricula sera alterada");
 				int matEnt = 0;
 				int matNov = 0;
 				do {
@@ -105,8 +117,9 @@ public class ControladorFuncionario {
 					if (findFuncionarioByMatricula(matEnt) == null) {
 						tela.mostraMensagem("Esta matr�cula n�o est� cadastrada, tente novamente");
 						printarFuncionariosCompleto();
-					}else{
-						tela.mostraMensagem("Funcionario de matricula '" + matEnt + "' selecionado, digite a nova matricula");
+					} else {
+						tela.mostraMensagem(
+								"Funcionario de matricula '" + matEnt + "' selecionado, digite a nova matricula");
 						matNov = tela.leInteiroPositivo();
 						if (findFuncionarioByMatricula(matNov) != null) {
 							tela.mostraMensagem(
@@ -162,7 +175,7 @@ public class ControladorFuncionario {
 				int mat = tela.leInteiroPositivo();
 				eae = false;
 				do {
-					
+
 					if (findFuncionarioByMatricula(mat) != null) {
 
 						tela.mostraMensagem("Digite o novo telefone do funcionario:");
@@ -170,31 +183,29 @@ public class ControladorFuncionario {
 						if (telefone.matches("^[0-9]+$")) {
 							tela.mostraMensagem("Telefone alterado com sucesso");
 							findFuncionarioByMatricula(mat).setTelefone(telefone);
-							
+
 							eae = true;
-						}
-						else {
+						} else {
 
 							System.out.println("DIGITE APENAS NUMEROS");
-					}
+						}
 
-						}
-						else {
-							tela.mostraMensagem("Matricula invalida, cheque a lista e digite novamente");
-							
-							mat = tela.leInteiroPositivo();
-							
-						}
-					}while (!eae);
+					} else {
+						tela.mostraMensagem("Matricula invalida, cheque a lista e digite novamente");
+
+						mat = tela.leInteiroPositivo();
+
+					}
+				} while (!eae);
 				break;
 
 			case 5:
 				printarFuncionariosCompleto();
 				tela.mostraMensagem("Digite a matricula do funcionario cuja Data de Nascimento ser� alterada");
-				 mat = tela.leInteiroPositivo();
+				mat = tela.leInteiroPositivo();
 				eae = false;
 				do {
-					
+
 					if (findFuncionarioByMatricula(mat) != null) {
 
 						System.out.println("digite a data de nascimento do funcionario(No formato ddMMaaaa)");
@@ -212,14 +223,14 @@ public class ControladorFuncionario {
 					}
 				} while (!eae);
 				break;
-				
+
 			case 6:
 				printarFuncionariosCompleto();
 				tela.mostraMensagem("Digite a matricula do funcionario cujo sal�rio ser� alterado");
 				mat = tela.leInteiroPositivo();
 				eae = false;
 				do {
-					
+
 					if (findFuncionarioByMatricula(mat) != null) {
 						System.out.println("digite o salario do Funcionario");
 						int salario = tela.leInteiroPositivo();
@@ -235,9 +246,8 @@ public class ControladorFuncionario {
 
 			}
 		} while (!eae);
-	
-	}
 
+	}
 
 	private void alteraNome() {
 
@@ -266,8 +276,6 @@ public class ControladorFuncionario {
 	}
 
 	public void excluirFuncionario() {
-		tela.mostraMensagem("Procure na lista e em seguida digite a Matricula do funcionario que ser� exclu�do");
-		printarFuncionariosCompleto();
 		int matricula = tela.leInteiroPositivo();
 		if (findFuncionarioByMatricula(matricula) != null) {
 			Funcionario funcionario = findFuncionarioByMatricula(matricula);
@@ -277,8 +285,8 @@ public class ControladorFuncionario {
 			tela.mostraMensagem("N�o existe Funcion�rio cadastrado com este n�mero de matr�cula");
 	}
 
-	public ArrayList<Funcionario> listarFuncionarios() {
-		return listaFuncionarios; // retorna para imprimir na tela
+	public Collection<Funcionario> listarFuncionarios() {
+		return mapeadorF.getList(); // retorna para imprimir na tela
 	}
 
 	public ArrayList<Funcionario> listarFuncionariosPorCargo(int codigo) {
@@ -292,13 +300,7 @@ public class ControladorFuncionario {
 	}
 
 	public Funcionario findFuncionarioByMatricula(int matricula) {
-		Funcionario funcionario = null;
-		for (Funcionario f : listaFuncionarios) {
-			if (f.getMatricula() == matricula) {
-				funcionario = f;
-			}
-		}
-		return funcionario;
+		return mapeadorF.get(matricula);
 	}
 
 	public Funcionario findFuncionarioByNome(String nome) {
@@ -318,29 +320,31 @@ public class ControladorFuncionario {
 
 	public void printaListaCargoNomeCodigoHorario() {
 
-		tela.mostraMensagem(
-				"===Lista de Cargos possui " + ControladorCargo.getInstance().getListaCargos().size() + " cargos===");
+		// tela.mostraMensagem(
+		// "===Lista de Cargos possui " +
+		// ControladorCargo.getInstance().getListaCargos().size() + " cargos===");
 
-		for (int a = 0; a < ControladorCargo.getInstance().getListaCargos().size(); a++) {
-			tela.mostraMensagem(
-					"  ---/C�digo :" + (ControladorCargo.getInstance().getListaCargos().get(a).getCodigo()));
-			tela.mostraMensagem("  ---/Cargo: " + (ControladorCargo.getInstance().getListaCargos().get(a).getNome()));
-			if (ControladorCargo.getInstance().getListaCargos().get(a).getEhGerencial()) {
-				tela.mostraMensagem("----CARGO COM ACESSO IRRESTRITO AO FINANCEIRO----");
-			} else {
-				tela.mostraMensagem("Este cargo pode acessar o financeiro durante o intervalo :"
-						+ (ControladorCargo.getInstance().getListaCargos().get(a).getHorariosPermitidos().toString()));
-
-			}
-			tela.mostraMensagem("==============================================");
-		}
+		// for (int a = 0; a < ControladorCargo.getInstance().getListaCargos().size();
+		// a++) {
+		// tela.mostraMensagem(
+		// " ---/C�digo :" +
+		// (ControladorCargo.getInstance().getListaCargos().get(a).getCodigo()));
+		// tela.mostraMensagem(" ---/Cargo: " +
+		// (ControladorCargo.getInstance().getListaCargos().get(a).getNome()));
+		// if (ControladorCargo.getInstance().getListaCargos().get(a).getEhGerencial())
+		// {
+		// tela.mostraMensagem("----CARGO COM ACESSO IRRESTRITO AO FINANCEIRO----");
+		// } else {
+		// tela.mostraMensagem("Este cargo pode acessar o financeiro durante o intervalo
+		// :"
+		// +
+		// (ControladorCargo.getInstance().getListaCargos().get(a).getHorariosPermitidos().toString()));
 
 	}
+	// tela.mostraMensagem("==============================================");
+	// }
 
-	public void adicionaCargo() {
-		// recebe o 0 da tela dps de imprimir a lista
-		ControladorCargo.getInstance().telaIncluirCargo();
-	}
+	// }
 
 	public String formataDataPraPrintar(String a) {
 		String dataPraPrintar;
@@ -357,14 +361,18 @@ public class ControladorFuncionario {
 
 		}
 		for (int a = 0; a < listaFuncionarios.size(); a++) {
-			Funcionario fTemp = (listarFuncionarios().get(a));
-			tela.mostraMensagem("---/NOME " + (fTemp.getNome()) + "  ---/MATRICULA :" + (fTemp.getMatricula())
-					+ "  ---/CARGO : " + (fTemp.getCargo().getNome()) + "  ---/TELEFONE : " + (fTemp.getTelefone())
-					+ "  ---/DATA NASCIMENTO : " + (formataDataPraPrintar(fTemp.getDataNascimento()))
-					+ "  ---/SALARIO : " + (fTemp.getSalario()));
+			// Funcionario fTemp = (listarFuncionarios().get(a));
+			// tela.mostraMensagem("---/NOME " + (fTemp.getNome()) + " ---/MATRICULA :" +
+			// (fTemp.getMatricula())
+			// + " ---/CARGO : " + (fTemp.getCargo().getNome()) + " ---/TELEFONE : " +
+			// (fTemp.getTelefone())
+			// + " ---/DATA NASCIMENTO : " +
+			// (formataDataPraPrintar(fTemp.getDataNascimento()))
+			// + " ---/SALARIO : " + (fTemp.getSalario()));
 			tela.mostraMensagem("==============================================");
 		}
 	}
+
 	/*
 	 * Daqui pra frente codigo novo
 	 */
@@ -372,13 +380,74 @@ public class ControladorFuncionario {
 	 * Chama a tela e da SetVisible = true.
 	 */
 	public void telaCadastroFuncionario() {
-		telaCadastroFuncionario = new TelaCadastroFuncionario();
+		if(!ControladorCargo.getInstance().getListaCargos().isEmpty()) {
+		telaCadastroFuncionario = new TelaInformFuncionario();
 		telaCadastroFuncionario.setVisible(true);
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "E necessario ao menos um cargo cadastrado para cadastrar funcionarios", "favor cadastrar cargo",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
-	public boolean novoIncluirFuncionario(DadosCadastroFuncionario funcionario) {
-		boolean retorno = false;
-		Funcionario funcTemp = new Funcionario(funcionario.matricula, funcionario.nome,  funcionario.cargo, funcionario.telefone, funcionario.dataNascimento, funcionario.salario  );
-		listaFuncionarios.add(funcTemp);
-		return retorno;
+
+	public void telaOperacoesFuncionarios() {
+		telaOperacoesFuncionarios = new TelaOperacoesFuncionarios();
+		telaOperacoesFuncionarios.setVisible(true);
+	}
+
+	/*
+	 * Insere na lista de funcionarios o novo funcionario e da SetVisible FALSE na janela 
+	 */
+	public void novoIncluirFuncionario(DadosCadastroFuncionario funcionario) {
+		if  ( (mapeadorF.get(funcionario.matricula)) != null) {
+			JOptionPane.showMessageDialog(null, "Numero de matricula indisponivel", "favor digitar outro",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		else{
+			Funcionario funcTemp = new Funcionario(funcionario.matricula, funcionario.nome, funcionario.cargo,
+				funcionario.telefone, funcionario.dataNascimento, funcionario.salario);
+			JOptionPane.showMessageDialog(null, "Funcionario cadastrado com sucesso");
+			telaCadastroFuncionario.setVisible(false);
+		mapeadorF.put(funcTemp);
+		telaOperacoesFuncionarios.atualizaTabela();
+		}
+
+	}
+
+	private Funcionario funcEdit;
+
+	public void telaEditarFuncionario(int matricula) {
+		funcEdit = findFuncionarioByMatricula(matricula);
+		telaEditFuncionario = new TelaInformFuncionario(findFuncionarioByMatricula(matricula));
+		adicionaListaEdit(matricula);
+		telaEditFuncionario.setVisible(true);
+	}
+
+	public void excluiFuncionarioByMatricula(int matricula) {
+		mapeadorF.remove(mapeadorF.get(matricula));
+
+	}
+
+	public void adicionaListaEdit(int matricula) {
+		listaFuncEdit.add(findFuncionarioByMatricula(matricula));
+
+	}
+
+	public void cancelouEdicao() {
+
+		listaFuncEdit.remove(listaFuncEdit.toArray().length - 1);
+
+	}
+
+	public void editarTodosOsDados(int matricula, String nome, Cargo cargoEditado, String telefone,
+			String dataNascimento, int salario) {
+		funcEdit.setNome(nome);
+		funcEdit.setMatricula(matricula);
+		funcEdit.setCargo(cargoEditado);
+		funcEdit.setDataNascimento(dataNascimento);
+		funcEdit.setSalario(salario);
+		funcEdit.setTelefone(telefone);
+		telaOperacoesFuncionarios.atualizaTabela();
+
 	}
 }
