@@ -164,6 +164,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 				if (!abortaCadastro){
 					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
 					valoresDefaultJanela();
+					ControladorCargo.getInstance().atualizaTabela();
 				}
 			}
 		}

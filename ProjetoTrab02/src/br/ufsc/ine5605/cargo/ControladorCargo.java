@@ -10,20 +10,21 @@ import br.ufsc.ine5605.horario.Horario;
 
 public class ControladorCargo {
 	private ArrayList<Cargo> listaCargos;
+	private TelaOperacoesCargos telaOperacoesCargos;
 	private TelaCadastroCargo telaCadastroCargo;
 	private TelaCargo tela;
 	private MapeadorCargo mapeador;
 	private static ControladorCargo instancia;
 	
 	
-	/****** OPCOES DO MENU PRINCIPAL ******/
-	private final String[] opcoesMenuPrincipal = { "Voltar", "Listar Cargos Cadastrados", "Incluir Cargo", "Excluir Cargo",
-	"Alterar Cargo" };
-	
-	/****** OPCOES DO MENU PARA EDICAO DOS CARGOS ******/
-	private final String[] opcoesMenuEditarCargo = { "Voltar", "Alterar Descricao", "Alterar status gerencial/acesso", 
-	"Alterar Horarios de Acesso" };
-	
+//	/****** OPCOES DO MENU PRINCIPAL ******/
+//	private final String[] opcoesMenuPrincipal = { "Voltar", "Listar Cargos Cadastrados", "Incluir Cargo", "Excluir Cargo",
+//	"Alterar Cargo" };
+//	
+//	/****** OPCOES DO MENU PARA EDICAO DOS CARGOS ******/
+//	private final String[] opcoesMenuEditarCargo = { "Voltar", "Alterar Descricao", "Alterar status gerencial/acesso", 
+//	"Alterar Horarios de Acesso" };
+//	
 	
 	private ControladorCargo() {
 		tela = new TelaCargo();
@@ -70,7 +71,8 @@ public class ControladorCargo {
 //    		}
 //    		
 //    	} while (opcao != 6);
-    	new TelaOperacoesCargos().setVisible(true);
+    	telaOperacoesCargos = new TelaOperacoesCargos();
+    	telaOperacoesCargos.setVisible(true);
     }
 	
     /**
@@ -78,58 +80,58 @@ public class ControladorCargo {
      *  que nao seja gerencial e que tenha permissao de acesso (ou seja, se eh um cargo que possua
      *  horarios a serem editados) para entao chamar a tela apropriada de edicao.
      */
-    private void alterarHorarios(){
-    	int codigo = tela.alterarHorarios();
-    	Cargo c = findCargoByCodigo(codigo);
-    	if (c != null){
-    		if (!c.getEhGerencial() && c.getPossuiAcesso()) {
-    			ControladorHorario.getInstance().editaHorariosCargo(c);
-    		} else {
-    			tela.mostraMensagem("Este cargo nao aceita inclusao de horarios");
-    		}
-    	} else {
-    		tela.mostraMensagem("Nao existe cargo com este codigo (" + codigo + ")");
-    	}
-    }
-    
-    private void alterarDescricao(){
-    	DadosAlteraDescricao dados = tela.alterarDescricao();
-    	Cargo c = findCargoByCodigo(dados.codigo);
-    	if (c != null){
-    		c.setNome(dados.nome);
-    		tela.mostraMensagem("Nome alterado com sucesso para \"" + dados.nome + "\"");
-    	} else {
-    		tela.mostraMensagem("Nao existe cargo com este codigo (" + dados.codigo + ")");
-    	}
-    }
+//    private void alterarHorarios(){
+//    	int codigo = tela.alterarHorarios();
+//    	Cargo c = findCargoByCodigo(codigo);
+//    	if (c != null){
+//    		if (!c.getEhGerencial() && c.getPossuiAcesso()) {
+//    			ControladorHorario.getInstance().editaHorariosCargo(c);
+//    		} else {
+//    			tela.mostraMensagem("Este cargo nao aceita inclusao de horarios");
+//    		}
+//    	} else {
+//    		tela.mostraMensagem("Nao existe cargo com este codigo (" + codigo + ")");
+//    	}
+//    }
+//    
+//    private void alterarDescricao(){
+//    	DadosAlteraDescricao dados = tela.alterarDescricao();
+//    	Cargo c = findCargoByCodigo(dados.codigo);
+//    	if (c != null){
+//    		c.setNome(dados.nome);
+//    		tela.mostraMensagem("Nome alterado com sucesso para \"" + dados.nome + "\"");
+//    	} else {
+//    		tela.mostraMensagem("Nao existe cargo com este codigo (" + dados.codigo + ")");
+//    	}
+//    }
 
-    /**
-     * Caso o cargo passe a ser gerencial ou a nao possuir acesso, apaga a lista de horarios permitidos.
-     * Caso o cargo passe a ser nao gerencial, e passe a ter acesso, solicita cadastro de horario.
-     */
-    private void alterarStatus(){
-    	DadosAlteraStatus dados = tela.alterarStatus();
-    	Cargo c = findCargoByCodigo(dados.codigo);
-    	if (c != null){
-    		boolean statusAcessoAnterior = c.getPossuiAcesso();
-    		c.setEhGerencial(dados.statusGerencial);
-    		c.setPossuiAcesso(dados.statusAcesso);
-
-    		if (c.getEhGerencial() || !c.getPossuiAcesso()){
-    			
-    			ControladorHorario.getInstance().removeTodosHorarios(c);
-    			tela.mostraMensagem("Horarios permitidos, caso existissem, foram apagados");
-    		}
-
-    		if (!c.getEhGerencial() && c.getPossuiAcesso()){
-    			if (!statusAcessoAnterior){
-    				ControladorHorario.getInstance().editaHorariosCargo(c);
-    			} else {
-    				tela.mostraMensagem("Este cargo ja possuia permissao de acesso, continua com horario(s) cadastrado(s) anteriormente");
-    			}
-    		}
-    	}
-    }
+//    /**
+//     * Caso o cargo passe a ser gerencial ou a nao possuir acesso, apaga a lista de horarios permitidos.
+//     * Caso o cargo passe a ser nao gerencial, e passe a ter acesso, solicita cadastro de horario.
+//     */
+//    private void alterarStatus(){
+//    	DadosAlteraStatus dados = tela.alterarStatus();
+//    	Cargo c = findCargoByCodigo(dados.codigo);
+//    	if (c != null){
+//    		boolean statusAcessoAnterior = c.getPossuiAcesso();
+//    		c.setEhGerencial(dados.statusGerencial);
+//    		c.setPossuiAcesso(dados.statusAcesso);
+//
+//    		if (c.getEhGerencial() || !c.getPossuiAcesso()){
+//    			
+//    			ControladorHorario.getInstance().removeTodosHorarios(c);
+//    			tela.mostraMensagem("Horarios permitidos, caso existissem, foram apagados");
+//    		}
+//
+//    		if (!c.getEhGerencial() && c.getPossuiAcesso()){
+//    			if (!statusAcessoAnterior){
+//    				ControladorHorario.getInstance().editaHorariosCargo(c);
+//    			} else {
+//    				tela.mostraMensagem("Este cargo ja possuia permissao de acesso, continua com horario(s) cadastrado(s) anteriormente");
+//    			}
+//    		}
+//    	}
+//    }
 
     
     /**
@@ -228,4 +230,9 @@ public class ControladorCargo {
 		
 		return ControladorHorario.getInstance().iniciaCadastro();
 	}
+	
+	public void atualizaTabela() {
+		telaOperacoesCargos.atualizaTabela();
+	}
+
 }

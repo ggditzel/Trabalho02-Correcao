@@ -126,6 +126,9 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 			btHorarios.setEnabled(false);
 		} else {
 			if (cargoAnterior.getPossuiAcesso()) {
+				btHorarios.setVisible(true);
+				btHorarios.setEnabled(true);
+			} else {
 				btHorarios.setVisible(false);
 				btHorarios.setEnabled(false);
 			}
@@ -162,9 +165,11 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 				}
 				
 				// se ja existe cargo cadastrado com o codigo editado, aborta o cadastro
-				if (ControladorCargo.getInstance().findCargoByCodigo(codigo) != null) {
-					JOptionPane.showMessageDialog(null, "Codigo ja em uso, favor escolher outro", "Codigo ja em uso", JOptionPane.WARNING_MESSAGE);
-					abortaCadastro = true;
+				if (codigo != cargoAnterior.getCodigo()){
+					if (ControladorCargo.getInstance().findCargoByCodigo(codigo) != null) {
+						JOptionPane.showMessageDialog(null, "Codigo ja em uso, favor escolher outro", "Codigo ja em uso", JOptionPane.WARNING_MESSAGE);
+						abortaCadastro = true;
+					}
 				}
 				
 				nome = tfPedeNomeCargo.getText();
@@ -178,7 +183,8 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 				
 				if (!abortaCadastro){
 					ControladorCargo.getInstance().excluirCargo(cargoAnterior.getCodigo());
-					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));				
+					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
+					ControladorCargo.getInstance().atualizaTabela();
 					dispose();
 				}
 			}

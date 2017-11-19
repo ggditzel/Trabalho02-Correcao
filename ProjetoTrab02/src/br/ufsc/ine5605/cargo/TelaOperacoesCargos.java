@@ -45,8 +45,8 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		btExcluir.addActionListener(btListener);
 		btEditar = new JButton("Editar");
 		btEditar.addActionListener(btListener);
-		btAtualizar = new JButton("Atualizar");
-		btAtualizar.addActionListener(btListener);
+		//btAtualizar = new JButton("Atualizar");
+		//btAtualizar.addActionListener(btListener);
 		lbNomeTabela = new JLabel("Cargos Cadastrados");
 		
 		tabelaCargos = new JTable();
@@ -64,13 +64,13 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		botoesInferiores.add(btCadastrar);
 		botoesInferiores.add(btEditar);
 		botoesInferiores.add(btExcluir);
-		botoesInferiores.add(btAtualizar);
+		//botoesInferiores.add(btAtualizar);
 		botoesInferiores.setVisible(true);
 		adicionaComponente(botoesInferiores, 0, 2, 1, 1);
 		
 	}
 
-	private void atualizaTabela() {
+	public void atualizaTabela() {
 		
 		DefaultTableModel modeloTabela = new DefaultTableModel();
 		modeloTabela.addColumn("Codigo");
@@ -125,8 +125,6 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 					JOptionPane.showMessageDialog(null, "Selecione um cargo da lista", "Cargo Nao Selecionado", JOptionPane.ERROR_MESSAGE);
 				}
 				
-			} else if(e.getSource() == btAtualizar){
-				atualizaTabela();
 			}
 			
 		}
