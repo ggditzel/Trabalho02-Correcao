@@ -36,12 +36,34 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 	 * Labels descricao de campo
 	 */
 
-	private JLabel jlMsg;
 	private JLabel jlPedeNome;
 	private JLabel jlPedeMatricula;
 	private JLabel jlPedeTelefone;
+	private JLabel jlPedeCargo;
 	private JLabel jlPedeDataNasci;
 	private JLabel jlPedeSalario;
+	/*
+	 * Metodo para inicializar as Labels de: Nome, Telefone, Cargo, DataNascimento, Salario
+	 */
+	public void incializaLabels() {
+		jlPedeNome = new JLabel("Nome");
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(jlPedeNome, 0, 0, 1, 1);
+		jlPedeCargo = new JLabel("Selecione o cargo");
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(jlPedeCargo, 0, 2, 1, 1);
+		jlPedeTelefone = new JLabel("Telefone");
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(jlPedeTelefone, 0, 3, 1, 1);
+		jlPedeDataNasci = new JLabel("Data Nascimento");
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(jlPedeDataNasci, 0, 4, 1, 1);
+		jlPedeSalario = new JLabel("Salario");
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(jlPedeSalario, 0, 5, 1, 1);
+
+	}
+
 	/*
 	 * Labels descricao regra de campo
 	 */
@@ -53,6 +75,20 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 	private JTextField tfEntraMatricula;
 	private JTextField tfEntraTelefone;
 	private JTextField tfEntraSalario;
+	
+	public void inicializaTextFields(String tFnome, String tFtelefone, int tFsalario) {
+		tfEntraNome = new JTextField(tFnome);
+		tfEntraNome.selectAll();
+		adicionaComponente(tfEntraNome, 1, 0, 2, 1);
+		tfEntraTelefone = new JTextField(tFtelefone);
+		tfEntraTelefone.selectAll();
+		adicionaComponente(tfEntraTelefone, 1, 3, 2, 1);
+		tfEntraSalario = new JTextField(tFsalario);
+		tfEntraTelefone.selectAll();
+		adicionaComponente(tfEntraSalario, 1, 5, 1, 1);
+
+	}
+
 	/*
 	 * ComboBoxes Cargo, Dia,Mes e Ano
 	 */
@@ -60,15 +96,46 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 	private JComboBox<String> cBDia;
 	private JComboBox<String> cBMes;
 	private JComboBox<String> cBAno;
-	private JComboBox<String> cBDiaa;
-	private JComboBox<String> cBMess;
-	private JComboBox<String> cBAnoo;
+
+	public void inicializaCBs() {
+		String[] diaString = new String[31];
+		String[] mesString = new String[12];
+		String[] anoString = new String[100];
+		for (int a = 0; a < 31; a++) {
+			diaString[a] = a + a + "";
+		}
+		for (int b = 0; b < 12; b++) {
+			mesString[b] = b + "";
+		}
+		for (int c = 0; c < 100; c++) {
+			anoString[c] = 2017 - c + "";
+		}
+		cBDia = new JComboBox(diaString);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(cBDia, 1, 4, 1, 1);
+
+		cBMes = new JComboBox(mesString);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(cBMes, 2, 4, 1, 1);
+
+		cBAno = new JComboBox(anoString);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(cBAno, 3, 4, 1, 1);
+
+		cBCargos = new JComboBox<Cargo>();
+		for (Cargo c : ControladorCargo.getInstance().getListaCargos()) {
+			cBCargos.addItem(c);
+		}
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(cBCargos, 1, 2, 1, 1);
+
+	}
+
 	/*
 	 * Botao cadastrar
 	 */
 	private JButton btCadastrar;
 	private JButton btEditar;
-	private JButton btCancelar;
 
 	int matricula;
 	String nome;
@@ -87,96 +154,15 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 		setSize(400, 250);
 		setAlwaysOnTop(true);
 		ButtonActionListener btListener = new ButtonActionListener();
-
-		/*
-		 * Label Nome, x=0 y=0 largura e altura=1 TextField Nome x=1 y=0 largura=2
-		 * altura=1
-		 */
-		jlPedeNome = new JLabel("Nome do Funcionario");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlPedeNome, 0, 0, 1, 1);
-
-		tfEntraNome = new JTextField("");
-		tfEntraNome.selectAll();
-		adicionaComponente(tfEntraNome, 1, 0, 2, 1);
-		/*
-		 * Labels de Matricula(x=0 y=1, x=2 y=1) e TextField(x=1 y=1)
-		 */
+		inicializaCBs();
+		inicializaTextFields("", "", 0);
+		incializaLabels();
+		tfEntraMatricula = new JTextField("");
+		tfEntraMatricula.selectAll();
 		jlPedeMatricula = new JLabel("Matricula");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(jlPedeMatricula, 0, 1, 1, 1);
-
-		tfEntraMatricula = new JTextField("");
-		tfEntraMatricula.selectAll();
 		adicionaComponente(tfEntraMatricula, 1, 1, 2, 1);
-
-		jlDescMatricula = new JLabel("Apenas numeros");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlDescMatricula, 2, 1, 1, 1);
-		/*
-		 * 
-		 * x=0 y=2 ComboBoc de cargos FALTA TESTAR
-		 */
-
-		cBCargos = new JComboBox<Cargo>();
-
-		for (Cargo c : ControladorCargo.getInstance().getListaCargos()) {
-			cBCargos.addItem(c);
-		}
-
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(cBCargos, 1, 2, 1, 1);
-		/*
-		 * x=0 y=3 Label de Telefone x=1 y=3 TextField de Telefone
-		 */
-		jlPedeTelefone = new JLabel("Telefone");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlPedeTelefone, 0, 3, 1, 1);
-
-		tfEntraTelefone = new JTextField("");
-		tfEntraTelefone.selectAll();
-		adicionaComponente(tfEntraTelefone, 1, 3, 2, 1);
-
-		jlPedeSalario = new JLabel("Salario");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlPedeSalario, 0, 5, 1, 1);
-
-		tfEntraSalario = new JTextField("");
-		tfEntraTelefone.selectAll();
-		adicionaComponente(tfEntraSalario, 1, 5, 1, 1);
-
-		/*
-		 * x=0 y=4 Label de dataNasci x=1 y=4 ComboBox de Dia x=2 y=4 ComboBox de Mes
-		 * x=3 y=4 ComboBox de Ano
-		 */
-		String[] diaString = new String[31];
-		String[] mesString = new String[12];
-		String[] anoString = new String[100];
-		for (int a = 0; a < 31; a++) {
-			diaString[a] = a + a + "";
-		}
-		for (int b = 0; b < 12; b++) {
-			mesString[b] = b + "";
-		}
-		for (int c = 0; c < 100; c++) {
-			anoString[c] = 2017 - c + "";
-		}
-		jlPedeDataNasci = new JLabel("Data Nascimento");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlPedeDataNasci, 0, 4, 1, 1);
-
-		 cBDiaa = new JComboBox(diaString);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(cBDiaa, 1, 4, 1, 1);
-
-		 cBMess = new JComboBox(mesString);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(cBMess, 2, 4, 1, 1);
-
-		cBAnoo = new JComboBox(anoString);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(cBAnoo, 3, 4, 1, 1);
-
 		btCadastrar = new JButton("Cadastrar");
 		adicionaComponente(btCadastrar, 0, 6, 3, 1);
 
@@ -190,123 +176,25 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 
 		super("Editar funcionario selecionado");
 
-		nome = funcionario.getNome();
-		String matriculaa = funcionario.getMatricula() + "";
-		telefone = funcionario.getTelefone();
-		String salario = funcionario.getSalario() + "";
-
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent wev) {
-
-				JOptionPane.showMessageDialog(null, "Nao foi possivel fechar a janela", "Clique em Editar ou Cancelar",
-						JOptionPane.ERROR_MESSAGE);
-			}
-
-		});
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		setSize(400, 250);
 		setAlwaysOnTop(true);
-		ButtonActionListener btListener = new ButtonActionListener();
-
-		/*
-		 * Label Nome, x=0 y=0 largura e altura=1 TextField Nome x=1 y=0 largura=2
-		 * altura=1
-		 */
-		jlPedeNome = new JLabel("Edite o nome ");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlPedeNome, 0, 0, 1, 1);
-
-		tfEntraNome = new JTextField(nome);
-		tfEntraNome.selectAll();
-		adicionaComponente(tfEntraNome, 1, 0, 2, 1);
-		/*
-		 * Labels de Matricula(x=0 y=1, x=2 y=1) e TextField(x=1 y=1)
-		 */
-		jlPedeMatricula = new JLabel("Edite a matricula ");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlPedeMatricula, 0, 1, 1, 1);
-
-		tfEntraMatricula = new JTextField(matriculaa);
-		tfEntraMatricula.selectAll();
-		adicionaComponente(tfEntraMatricula, 1, 1, 2, 1);
-
-		jlDescMatricula = new JLabel("Apenas numeros");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlDescMatricula, 2, 1, 1, 1);
-		/*
-		 * 
-		 * x=0 y=2 ComboBoc de cargos FALTA TESTAR
-		 */
-
-		cBCargos = new JComboBox<Cargo>();
-		cBCargos.addItem(ControladorCargo.getInstance().getListaCargos());
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(cBCargos, 0, 2, 1, 1);
-
-		/*
-		 * x=0 y=3 Label de Telefone x=1 y=3 TextField de Telefone
-		 */
-		jlPedeTelefone = new JLabel("edite o telefone");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlPedeTelefone, 0, 3, 1, 1);
-
-		tfEntraTelefone = new JTextField(telefone);
-		tfEntraTelefone.selectAll();
-		adicionaComponente(tfEntraTelefone, 1, 3, 2, 1);
-
-		jlPedeSalario = new JLabel("Edite o salario");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlPedeSalario, 0, 5, 1, 1);
-
-		tfEntraSalario = new JTextField(salario);
-		tfEntraTelefone.selectAll();
-		adicionaComponente(tfEntraSalario, 1, 5, 1, 1);
-
-		/*
-		 * x=0 y=4 Label de dataNasci x=1 y=4 ComboBox de Dia x=2 y=4 ComboBox de Mes
-		 * x=3 y=4 ComboBox de Ano
-		 */
-		int[] diaString = new int[31];
-		String[] mesString = new String[12];
-		String[] anoString = new String[100];
-		for (int a = 0; a < 31; a++) {
-			diaString[a] = a ;
-		}
-		for (int b = 0; b < 12; b++) {
-			mesString[b] = b + "";
-		}
-		for (int c = 0; c < 100; c++) {
-			anoString[c] = 2017 - c + "";
-		}
-		jlPedeDataNasci = new JLabel("Data Nascimento");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(jlPedeDataNasci, 0, 4, 1, 1);
-
-		JComboBox cBDia = new JComboBox();
-		cBDia.addItem(diaString);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(cBDia, 1, 4, 1, 1);
-
-		JComboBox cBMes = new JComboBox();
-		cBMes.addItem(mesString);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(cBMes, 2, 4, 1, 1);
-
-		JComboBox cBAno = new JComboBox();
-		cBAno.addItem(anoString);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		adicionaComponente(cBAno, 3, 4, 1, 1);
+		ButtonActionListener btListener2 = new ButtonActionListener();
+		inicializaCBs();
+		inicializaTextFields(funcionario.getNome(), funcionario.getTelefone(), funcionario.getSalario());
+		incializaLabels();
 
 		btEditar = new JButton("Editar");
-		adicionaComponente(btCadastrar, 0, 6, 1, 1);
+		adicionaComponente(btEditar, 0, 7, 1, 1);
 
-		btCancelar = new JButton("CANCELAR");
-		adicionaComponente(btCancelar, 1, 6, 1, 1);
+		btEditar.addActionListener(btListener2);
 
-		btEditar.addActionListener(btListener);
+	}
 
+	public void erroMatEmUso() {
+		JOptionPane.showMessageDialog(null, "Numero de matricula indisponivel", "favor digitar outro",
+				JOptionPane.ERROR_MESSAGE);
 	}
 
 	private class ButtonActionListener implements ActionListener {
@@ -316,7 +204,7 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 			boolean abortaCadastro = false;
 			boolean abortaEdicao = false;
 
-			if (evento.getSource() == btCadastrar) {
+			if (evento.getActionCommand().equals("Cadastrar")) {
 				try {
 					matricula = Integer.parseInt(tfEntraMatricula.getText());
 				} catch (NumberFormatException e) {
@@ -331,7 +219,7 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 							JOptionPane.ERROR_MESSAGE);
 					abortaCadastro = true;
 				}
-				}
+
 				nome = tfEntraNome.getText();
 
 				Cargo cargoCb = (Cargo) cBCargos.getSelectedItem();
@@ -340,69 +228,54 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 				Cargo cargoEscolhido = ControladorCargo.getInstance().findCargoByCodigo(codigoE);
 
 				telefone = tfEntraTelefone.getText();
-				String dataN =  (String) (cBDiaa.getSelectedItem() + "/" + cBMess.getSelectedItem() + "/" +cBAnoo.getSelectedItem());
+				String dataN = (String) (cBDia.getSelectedItem() + "/" + cBMes.getSelectedItem() + "/"
+						+ cBAno.getSelectedItem());
 
 				if ((!abortaCadastro)) {
-					ControladorFuncionario.getInstance().novoIncluirFuncionario(new DadosCadastroFuncionario(matricula,
-							nome, cargoEscolhido, telefone, dataN, salario));
-					
+					ControladorFuncionario.getInstance().novoIncluirFuncionario(
+							new DadosCadastroFuncionario(matricula, nome, cargoEscolhido, telefone, dataN, salario));
+
 				}
-				
-				
-				
-				/*
-				 * inicio das operacoes de EDICAO
-				 */
-				
-				
-				
-				
-				
+			}
 
-				if (evento.getSource() == btEditar) {
-					try {
-						matricula = Integer.parseInt(tfEntraMatricula.getText());
-					} catch (NumberFormatException e) {
-						JOptionPane.showMessageDialog(null, "Digite apenas numeros para a matricula", "Erro de Dados",
-								JOptionPane.ERROR_MESSAGE);
-						abortaEdicao = true;
-					}
-					try {
-						salario = Integer.parseInt(tfEntraSalario.getText());
-					} catch (NumberFormatException e) {
-						JOptionPane.showMessageDialog(null, "Digite apenas numeros para o salario", "Erro de Dados",
-								JOptionPane.ERROR_MESSAGE);
-						abortaEdicao = true;
-					}
+			/*
+			 * inicio das operacoes de EDICAO
+			 */
 
-					if ((!abortaEdicao)
-							&& (ControladorFuncionario.getInstance().findFuncionarioByMatricula(matricula) != null)) {
-						JOptionPane.showMessageDialog(null, "Numero de matricula indisponivel", "favor digitar outro",
-								JOptionPane.ERROR_MESSAGE);
+			if (evento.getActionCommand().equals("Editar")) {
 
-					}
+				try {
+					salario = Integer.parseInt(tfEntraSalario.getText());
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Digite apenas numeros para o salario", "Erro de Dados",
+							JOptionPane.ERROR_MESSAGE);
+					abortaEdicao = true;
+				}
+
+				if ((!abortaEdicao)) {
 
 					nome = tfEntraNome.getText();
 					Cargo cargoEditado = (Cargo) cBCargos.getSelectedItem();
 					telefone = tfEntraTelefone.getText();
-					dataNascimento = cBDia + "/" + cBMes + "/" + cBAno;
+					dataNascimento = (String) cBDia.getSelectedItem() + "/" + cBMes.getSelectedItem() + "/"
+							+ cBAno.getSelectedItem();
 
-					if ((!abortaEdicao)
-							&& (ControladorFuncionario.getInstance().findFuncionarioByMatricula(matricula) == null)) {
+					ControladorFuncionario.getInstance().editarTodosOsDados(matricula, nome, cargoEditado, telefone,
+							dataNascimento, salario);
 
-						ControladorFuncionario.getInstance().editarTodosOsDados(matricula, nome, cargoEditado, telefone,
-								dataNascimento, salario);
-						JOptionPane.showMessageDialog(null, "Funcionario editado com sucesso");
-
-					}
-					if (evento.getSource() == btCancelar) {
-						ControladorFuncionario.getInstance().cancelouEdicao();
-						dispose();
-						JOptionPane.showMessageDialog(null, "Edicao cancelada");
-
-					}
 				}
+
 			}
 		}
 	}
 
+	public void msgCadOK() {
+		JOptionPane.showMessageDialog(null, "Funcionario cadastrado com sucesso");
+		
+	}
+
+	public void msgEditOk() {
+		JOptionPane.showMessageDialog(null, "Funcionario editado com sucesso");
+		
+	}
+}
