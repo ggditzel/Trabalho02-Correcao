@@ -56,6 +56,9 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		
 		this.cargoAnterior = cargo;
 		
+		// considera os horarios definidos para o cargo antigo
+		horariosPermitidos = cargoAnterior.getHorariosPermitidos();
+		
     	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(400, 250);
 		//setAlwaysOnTop(true);
@@ -66,6 +69,7 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		GerencialListener rbGerencialListener = new GerencialListener();
 		AcessoListener rbAcessoListener = new AcessoListener();
 
+		//solicita nome do cargo, preenche com o antigo
 		jlPedeNomeCargo = new JLabel("Nome do cargo");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(jlPedeNomeCargo, 0, 0, 1, 1);
@@ -74,6 +78,7 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		tfPedeNomeCargo.selectAll();
 		adicionaComponente(tfPedeNomeCargo, 1, 0, 2, 1);
 			
+		//solicita codigo do cargo, preenche com o antigo
 		jlPedeCodigoCargo = new JLabel("Codigo do cargo");
 		adicionaComponente(jlPedeCodigoCargo, 0, 1, 1, 1);
 		
@@ -81,49 +86,51 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		tfPedeCodigoCargo.selectAll();
 		adicionaComponente(tfPedeCodigoCargo, 1, 1, 2, 1);
 		
-		
+		//solicita se eh gerencial, seleciona botao antigo
 		lbGerencial = new JLabel("Este cargo eh gerencial?");
 		adicionaComponente(lbGerencial, 0, 2, 1, 1);
-		
-		
 		rbSimGerencial = new JRadioButton("Sim", cargoAnterior.getEhGerencial());
 		adicionaComponente(rbSimGerencial, 1, 2, 1, 1);
-		
 		rbNaoGerencial = new JRadioButton("Nao", !cargoAnterior.getEhGerencial());
-		adicionaComponente(rbNaoGerencial, 2, 2, 1, 1);
+		adicionaComponente(rbNaoGerencial, 2, 2, 1, 1);		
 		
-		horariosPermitidos = cargoAnterior.getHorariosPermitidos();
-		
+		// agrupa logicamente os Radio Buttons de gerencia
 		grupoRbGerencial = new ButtonGroup();
 		grupoRbGerencial.add(rbNaoGerencial);
 		grupoRbGerencial.add(rbSimGerencial);
 		rbSimGerencial.addItemListener(rbGerencialListener);
 		rbNaoGerencial.addItemListener(rbGerencialListener);
 
+		
+		// solicita se tem acesso, seleciona botao antigo
 		lbAcesso = new JLabel("Este cargo possui acesso?");
 		adicionaComponente(lbAcesso, 0, 3, 1, 1);
-		
 		rbSimAcesso = new JRadioButton("Sim", cargoAnterior.getPossuiAcesso());
 		adicionaComponente(rbSimAcesso, 1, 3, 1, 1);
-		
 		rbNaoAcesso = new JRadioButton("Nao", !cargoAnterior.getPossuiAcesso());
 		adicionaComponente(rbNaoAcesso, 2, 3, 1, 1);
 		
-		if (!cargoAnterior.getEhGerencial()) {
-			if (cargoAnterior.getPossuiAcesso()) {
-				btHorarios.setVisible(true);
-				btHorarios.setEnabled(true);
-			} else {
-				btHorarios.setVisible(false);
-				btHorarios.setEnabled(false);
-			}
-		}
-		
+		// agrupa logicamente os Radio Buttons de acesso
 		grupoRbAcesso = new ButtonGroup();
 		grupoRbAcesso.add(rbNaoAcesso);
 		grupoRbAcesso.add(rbSimAcesso);
 		rbSimAcesso.addItemListener(rbAcessoListener);
 		rbNaoAcesso.addItemListener(rbAcessoListener);
+			
+		// seleciona visibilidade do botao de cadastro de horarios e de selecao de acesso
+		if (cargoAnterior.getEhGerencial()) {
+			lbAcesso.setEnabled(false);
+			rbSimAcesso.setEnabled(false);
+			rbNaoAcesso.setEnabled(false);
+			btHorarios.setVisible(false);
+			btHorarios.setEnabled(false);
+		} else {
+			if (cargoAnterior.getPossuiAcesso()) {
+				btHorarios.setVisible(false);
+				btHorarios.setEnabled(false);
+			}
+		}
+		
 
 		//btHorarios = new JButton("Castrar Horarios");
 		btHorarios.addActionListener(btListener);
@@ -133,6 +140,7 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		adicionaComponente(btEditar, 0, 5, 3, 1);
 		btEditar.addActionListener(btListener);
 		
+
 	}
 	
 	private class ButtonActionListener implements ActionListener {
@@ -149,7 +157,13 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 				try {
 					codigo = Integer.parseInt(tfPedeCodigoCargo.getText());
 				} catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(null, "Digite apenas numeros para o codigo", "Erro de Dados", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Digite apenas numeros para o codigo", "Erro de Dados", JOptionPane.WARNING_MESSAGE);
+					abortaCadastro = true;
+				}
+				
+				// se ja existe cargo cadastrado com o codigo editado, aborta o cadastro
+				if (ControladorCargo.getInstance().findCargoByCodigo(codigo) != null) {
+					JOptionPane.showMessageDialog(null, "Codigo ja em uso, favor escolher outro", "Codigo ja em uso", JOptionPane.WARNING_MESSAGE);
 					abortaCadastro = true;
 				}
 				
@@ -158,13 +172,13 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 				possuiAcesso = rbSimAcesso.isSelected();
 				
 				if (possuiAcesso && horariosPermitidos.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Cargo com permissao de acesso, mas sem horarios permitidos cadastrados. Cadastrar horario antes de prosseguir ao cadastro do cargo", "Solicitacao para cadastro de horario", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Cargo com permissao de acesso, mas sem horarios cadastrados. Cadastrar horario antes de prosseguir.", "Solicitacao para cadastro de horario", JOptionPane.ERROR_MESSAGE);
 					abortaCadastro = true;
 				}
 				
 				if (!abortaCadastro){
 					ControladorCargo.getInstance().excluirCargo(cargoAnterior.getCodigo());
-					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
+					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));				
 					dispose();
 				}
 			}
