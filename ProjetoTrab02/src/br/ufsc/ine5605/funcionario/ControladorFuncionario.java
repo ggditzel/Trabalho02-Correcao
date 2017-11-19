@@ -380,13 +380,11 @@ public class ControladorFuncionario {
 	 * Chama a tela e da SetVisible = true.
 	 */
 	public void telaCadastroFuncionario() {
-		if(!ControladorCargo.getInstance().getListaCargos().isEmpty()) {
-		telaCadastroFuncionario = new TelaInformFuncionario();
-		telaCadastroFuncionario.setVisible(true);
-		}
-		else {
-			JOptionPane.showMessageDialog(null, "E necessario ao menos um cargo cadastrado para cadastrar funcionarios", "favor cadastrar cargo",
-					JOptionPane.ERROR_MESSAGE);
+		if (!ControladorCargo.getInstance().getListaCargos().isEmpty()) {
+			telaCadastroFuncionario = new TelaInformFuncionario();
+			telaCadastroFuncionario.setVisible(true);
+		} else {
+			telaOperacoesFuncionarios.erroNaoTemCargo();
 		}
 	}
 
@@ -396,20 +394,20 @@ public class ControladorFuncionario {
 	}
 
 	/*
-	 * Insere na lista de funcionarios o novo funcionario e da SetVisible FALSE na janela 
+	 * Insere na lista de funcionarios o novo funcionario e da SetVisible FALSE na
+	 * janela
 	 */
 	public void novoIncluirFuncionario(DadosCadastroFuncionario funcionario) {
-		if  ( (mapeadorF.get(funcionario.matricula)) != null) {
-			JOptionPane.showMessageDialog(null, "Numero de matricula indisponivel", "favor digitar outro",
-					JOptionPane.ERROR_MESSAGE);
-		}
-		else{
+		if ((mapeadorF.get(funcionario.matricula)) != null) {
+			telaCadastroFuncionario.erroMatEmUso();
+		} else {
 			Funcionario funcTemp = new Funcionario(funcionario.matricula, funcionario.nome, funcionario.cargo,
-				funcionario.telefone, funcionario.dataNascimento, funcionario.salario);
-			JOptionPane.showMessageDialog(null, "Funcionario cadastrado com sucesso");
+					funcionario.telefone, funcionario.dataNascimento, funcionario.salario);
+			telaCadastroFuncionario.msgCadOK();
 			telaCadastroFuncionario.setVisible(false);
-		mapeadorF.put(funcTemp);
-		telaOperacoesFuncionarios.atualizaTabela();
+			mapeadorF.put(funcTemp);
+			mapeadorF.persist();
+			telaOperacoesFuncionarios.atualizaTabela();
 		}
 
 	}
@@ -417,9 +415,8 @@ public class ControladorFuncionario {
 	private Funcionario funcEdit;
 
 	public void telaEditarFuncionario(int matricula) {
-		funcEdit = findFuncionarioByMatricula(matricula);
-		telaEditFuncionario = new TelaInformFuncionario(findFuncionarioByMatricula(matricula));
-		adicionaListaEdit(matricula);
+		funcEdit = mapeadorF.get(matricula);
+		telaEditFuncionario = new TelaInformFuncionario(funcEdit);
 		telaEditFuncionario.setVisible(true);
 	}
 
@@ -428,26 +425,21 @@ public class ControladorFuncionario {
 
 	}
 
-	public void adicionaListaEdit(int matricula) {
-		listaFuncEdit.add(findFuncionarioByMatricula(matricula));
-
-	}
-
-	public void cancelouEdicao() {
-
-		listaFuncEdit.remove(listaFuncEdit.toArray().length - 1);
-
-	}
-
 	public void editarTodosOsDados(int matricula, String nome, Cargo cargoEditado, String telefone,
 			String dataNascimento, int salario) {
-		funcEdit.setNome(nome);
-		funcEdit.setMatricula(matricula);
-		funcEdit.setCargo(cargoEditado);
-		funcEdit.setDataNascimento(dataNascimento);
-		funcEdit.setSalario(salario);
-		funcEdit.setTelefone(telefone);
-		telaOperacoesFuncionarios.atualizaTabela();
-
+		if (mapeadorF.get(matricula) == null) {
+			funcEdit.setNome(nome);
+			funcEdit.setCargo(cargoEditado);
+			funcEdit.setDataNascimento(dataNascimento);
+			funcEdit.setSalario(salario);
+			funcEdit.setTelefone(telefone);
+			mapeadorF.persist();
+			telaOperacoesFuncionarios.atualizaTabela();
+			telaEditFuncionario.msgEditOk();
+			telaEditFuncionario.setVisible(false);
+		}
+		else {
+			telaEditFuncionario.erroMatEmUso();
+		}
 	}
 }

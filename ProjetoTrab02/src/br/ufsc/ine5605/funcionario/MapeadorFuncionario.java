@@ -27,6 +27,7 @@ public class MapeadorFuncionario {
 		persist();
 	}
 
+
 	public Funcionario get(Integer matricula) {
 		return cacheFuncionarios.get(matricula);
 	}

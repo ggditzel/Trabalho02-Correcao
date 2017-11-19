@@ -36,7 +36,6 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 		setSize(700, 250);
 		setLocationRelativeTo(null);
 		ButtonActionListener btListener = new ButtonActionListener();
-		
 
 		tabelaFunc = new JTable();
 		tabelaFunc.setPreferredScrollableViewportSize(new Dimension(600, 60));
@@ -61,7 +60,6 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 		botoesInferiores.add(btExcluir);
 		botoesInferiores.setVisible(true);
 		adicionaComponente(botoesInferiores, 0, 2, 1, 1);
-		
 
 	}
 
@@ -74,7 +72,6 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 		tabelaaMod.addColumn("Telefone");
 		tabelaaMod.addColumn("Data Nascimento");
 
-		
 		listaGeral = ControladorFuncionario.getInstance().listarFuncionarios();
 		if (listaGeral.size() == 0) {
 			tabelaaMod.addRow(new Object[] { "Nenhum", "funcionario", "cadastrado", "no", "sistema", " :(" });
@@ -103,7 +100,7 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 		public void actionPerformed(ActionEvent e) {
 			// Botao cadastrar = chama telaCadastroFuncionario
 			if (e.getSource() == btCadastrar) {
-				
+
 				ControladorFuncionario.getInstance().telaCadastroFuncionario();
 			}
 
@@ -111,23 +108,35 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 			else if (e.getSource() == btEditar) {
 
 				try {
-					
+
 					int linha = tabelaFunc.getSelectedRow();
 					int matricula = (int) tabelaFunc.getValueAt(linha, 1);
 					ControladorFuncionario.getInstance().telaEditarFuncionario(matricula);
-
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Selecione um funcionario da lista",
-							"Nenhum funcionario selecionado", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Selecione um funcionario da lista", "Selecao nula",
+							JOptionPane.ERROR_MESSAGE);
 				}
+			}
 
-			} else if (e.getSource() == btExcluir) {
-
-				int linha = tabelaFunc.getSelectedRow();
-				int matricula = (int) tabelaFunc.getValueAt(linha, 1);
-				ControladorFuncionario.getInstance().excluiFuncionarioByMatricula(matricula);
-				atualizaTabela();
+			else if (e.getSource() == btExcluir) {
+				try {
+					int linha = tabelaFunc.getSelectedRow();
+					int matricula = (int) tabelaFunc.getValueAt(linha, 1);
+					ControladorFuncionario.getInstance().excluiFuncionarioByMatricula(matricula);
+					atualizaTabela();
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Selecione um funcionario da lista", "Selecao nula",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
+
+
+	}
+
+	public void erroNaoTemCargo() {
+		JOptionPane.showMessageDialog(null, "E necessario ao menos um cargo cadastrado para cadastrar funcionarios",
+				"favor cadastrar cargo", JOptionPane.ERROR_MESSAGE);
+
 	}
 }
