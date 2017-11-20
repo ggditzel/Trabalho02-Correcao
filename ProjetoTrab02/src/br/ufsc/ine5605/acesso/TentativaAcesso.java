@@ -3,12 +3,14 @@ package br.ufsc.ine5605.acesso;
 import java.io.Serializable;
 
 import br.ufsc.ine5605.Mapeavel;
+import br.ufsc.ine5605.funcionario.ControladorFuncionario;
 import br.ufsc.ine5605.horario.Hora;
 
 public abstract class TentativaAcesso implements Serializable, Mapeavel<Integer>{
 	protected String data;
 	protected Hora hora;
 	protected int matricula;
+        protected final String nome;
 	protected Integer id;
 	
 	
@@ -17,6 +19,7 @@ public abstract class TentativaAcesso implements Serializable, Mapeavel<Integer>
 		this.hora = hora;
 		this.matricula = matricula;
 		this.id = id;
+                this.nome = ControladorFuncionario.getInstance().findFuncionarioByMatricula(matricula) == null ? "" : ControladorFuncionario.getInstance().findFuncionarioByMatricula(matricula).getNome();
 	}
 	
 	public String getData() {
@@ -44,5 +47,7 @@ public abstract class TentativaAcesso implements Serializable, Mapeavel<Integer>
 	public void setID() {
 		this.id = id;
 	}
-	
+	public String getNome() {
+            return nome;
+        }
 }
