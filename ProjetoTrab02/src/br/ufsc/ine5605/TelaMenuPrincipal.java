@@ -13,6 +13,7 @@ public class TelaMenuPrincipal extends TelaComGridBagLayout {
 	private JLabel lbPergunta;
 	private JButton btGerenciarSistema;
 	private JButton btAcessarSala;
+	private JButton btAcessoTeste;
 	
 	public TelaMenuPrincipal() {
 		super("Menu Principal");
@@ -33,12 +34,17 @@ public class TelaMenuPrincipal extends TelaComGridBagLayout {
 		btAcessarSala = new JButton("Acessar o financeiro");
 		btAcessarSala.addActionListener(btListener);
 		
+		btAcessoTeste = new JButton("Usar horario ficticio para acesso (para testes)");
+		btAcessoTeste.addActionListener(btListener);
+		
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(lbPergunta, 0, 0, 1, 1);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(btGerenciarSistema, 0, 1, 1, 1);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(btAcessarSala, 0, 2, 1, 1);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		adicionaComponente(btAcessoTeste, 0, 3, 1, 1);
 		repaint();
 	}
 	
@@ -50,8 +56,9 @@ public class TelaMenuPrincipal extends TelaComGridBagLayout {
 				ControladorPrincipal.getInstance().gerenciarSistema();
 			} else if(e.getSource() == btAcessarSala) {
 				ControladorPrincipal.getInstance().iniciarTerminal();
+			}else if(e.getSource() == btAcessoTeste) {
+				ControladorPrincipal.getInstance().iniciarTerminalFicticio();
 			}
-			
 		}
 		
 	}
