@@ -86,8 +86,6 @@ public class TelaAcessoFicticio extends TelaAcesso {
 							+ cbAno.getSelectedItem());
         setHora(new Hora((int)cbHora.getSelectedItem(), (int) cbMin.getSelectedItem()));
 	if(respostaOk) {
-            System.out.println(data);
-            System.out.println(hora.toString());
             ControladorTentativaAcesso.getInstance().validaTentativa(matricula, data, hora);
             tfMatricula.setText("");
 	}
