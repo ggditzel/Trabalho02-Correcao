@@ -63,11 +63,6 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 		adicionaComponente(jlPedeSalario, 0, 5, 1, 1);
 
 	}
-
-	/*
-	 * Labels descricao regra de campo
-	 */
-	private JLabel jlDescMatricula;
 	/*
 	 * Campos para inserir Nome, Matricula Telefone e Ano
 	 */
@@ -152,7 +147,7 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 		// configuracao de janela e inicializacao
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(400, 250);
-		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 		ButtonActionListener btListener = new ButtonActionListener();
 		inicializaCBs();
 		inicializaTextFields("", "", 0);
@@ -179,7 +174,7 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		setSize(400, 250);
-		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 		ButtonActionListener btListener2 = new ButtonActionListener();
 		inicializaCBs();
 		inicializaTextFields(funcionario.getNome(), funcionario.getTelefone(), funcionario.getSalario());
@@ -203,7 +198,7 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 		public void actionPerformed(ActionEvent evento) {
 			boolean abortaCadastro = false;
 			boolean abortaEdicao = false;
-
+			//Checa se a matricula e o salario sao Int e envia todos os dados como um DadosCadastroFuncionario para o controlador
 			if (evento.getActionCommand().equals("Cadastrar")) {
 				try {
 					matricula = Integer.parseInt(tfEntraMatricula.getText());
@@ -238,10 +233,9 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 				}
 			}
 
-			/*
-			 * inicio das operacoes de EDICAO
-			 */
-
+			// inicio das operacoes de EDICAO
+			 
+			// checa se o salario e um Int e chama o metodo editarTodosOsDados, passando os dados digitados na tela como um DadosCadastroFuncionario
 			if (evento.getActionCommand().equals("Editar")) {
 
 				try {
@@ -268,12 +262,16 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 			}
 		}
 	}
-
+	/*
+	 * Envia mensagem "Funcionario cadastrado com sucesso"
+	 */
 	public void msgCadOK() {
 		JOptionPane.showMessageDialog(null, "Funcionario cadastrado com sucesso");
 		
 	}
-
+	/*
+	 * Envia mensagem "Funcionario editado com sucesso"
+	 */
 	public void msgEditOk() {
 		JOptionPane.showMessageDialog(null, "Funcionario editado com sucesso");
 		

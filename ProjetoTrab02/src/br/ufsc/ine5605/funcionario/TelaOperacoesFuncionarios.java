@@ -29,10 +29,15 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 	private JTable tabelaFunc;
 	private JScrollPane spTab;
 	private JLabel lbNomeTab;
-
+	/*
+	 * define dimensoes e posicao da tela
+	 * inicializa labels, botoes e JPanel
+	 * 
+	 */
 	public TelaOperacoesFuncionarios() {
-
+		
 		super("Operacoes com Funcionarios");
+		
 		setSize(700, 250);
 		setLocationRelativeTo(null);
 		ButtonActionListener btListener = new ButtonActionListener();
@@ -63,6 +68,10 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 
 	}
 
+	/*
+	 * adiciona as colunas Nome,Matricula,Cargo,Salario,Telefone e Data de
+	 * dascimento, preenche as linhas com os dados existentes no sistema
+	 */
 	public void atualizaTabela() {
 		DefaultTableModel tabelaaMod = new DefaultTableModel();
 		tabelaaMod.addColumn("Nome");
@@ -104,7 +113,7 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 				ControladorFuncionario.getInstance().telaCadastroFuncionario();
 			}
 
-			// Botao Editar joga para tela de edicao o funcionario da linha selecionada
+			// Botao Editar abre a tela de edicao com o funcionario da linha selecionada
 			else if (e.getSource() == btEditar) {
 
 				try {
@@ -117,6 +126,8 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
+			// evento "botao excluir pressionado", chama o metodo do controlador que exclui
+			// funcionario pela matricula e atualiza a tabela
 
 			else if (e.getSource() == btExcluir) {
 				try {
@@ -131,9 +142,13 @@ public class TelaOperacoesFuncionarios extends TelaComGridBagLayout {
 			}
 		}
 
-
 	}
 
+	/*
+	 * mensagem de erro
+	 * "E necessario ao menos um cargo cadastrado para cadastrar funcionarios",
+	 * "favor cadastrar cargo"
+	 */
 	public void erroNaoTemCargo() {
 		JOptionPane.showMessageDialog(null, "E necessario ao menos um cargo cadastrado para cadastrar funcionarios",
 				"favor cadastrar cargo", JOptionPane.ERROR_MESSAGE);

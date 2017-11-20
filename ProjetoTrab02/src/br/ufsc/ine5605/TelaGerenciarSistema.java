@@ -53,7 +53,7 @@ public class TelaGerenciarSistema extends TelaComGridBagLayout {
 			if(e.getSource() == btOperacoesCargos) {
 				ControladorCargo.getInstance().mostraMenu();
 			} else if(e.getSource() == btOperacoesFuncionarios) {
-				ControladorFuncionario.getInstance().mostraMenu();
+				ControladorFuncionario.getInstance().telaOperacoesFuncionarios();
 			} else if(e.getSource() == btRelatoriosAcesso) {
 				ControladorTentativaAcesso.getInstance().menuRelatorioTentativas();
 			}

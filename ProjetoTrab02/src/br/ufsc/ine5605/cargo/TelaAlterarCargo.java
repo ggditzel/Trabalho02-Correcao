@@ -50,7 +50,11 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 	
 	// cargo cujos valores serao editados
 	private Cargo cargoAnterior;
-
+	
+	/**
+	 * Tela para edicao de cargos cadastrados
+	 * @param cargo
+	 */
 	public TelaAlterarCargo(Cargo cargo) {
 		super("Edicao de Cargos");
 		
@@ -182,8 +186,12 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 				}
 				
 				if (!abortaCadastro){
-					ControladorCargo.getInstance().excluirCargo(cargoAnterior.getCodigo());
-					ControladorCargo.getInstance().incluirCargo(new DadosCadastroCargo(codigo, nome, ehGerencial, possuiAcesso, horariosPermitidos));
+					cargoAnterior.setCodigo(codigo);
+					cargoAnterior.setNome(nome);
+					cargoAnterior.setEhGerencial(ehGerencial);
+					cargoAnterior.setPossuiAcesso(possuiAcesso);
+					cargoAnterior.setHorariosPermitidos(horariosPermitidos);
+					ControladorCargo.getInstance().gravarCargo(cargoAnterior);
 					ControladorCargo.getInstance().atualizaTabela();
 					dispose();
 				}
@@ -222,7 +230,6 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 	
 	private class AcessoListener implements ItemListener {
 
-		// de repente vale s� avisar que depois tem que cadastrar hor�rio de acesso, tem que ver como ficam as outras janelas
 		public void itemStateChanged(ItemEvent evento) {
 			if (evento.getStateChange() == ItemEvent.SELECTED) {
 				if (rbSimAcesso.isSelected()) {

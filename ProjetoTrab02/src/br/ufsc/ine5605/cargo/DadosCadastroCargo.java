@@ -11,6 +11,14 @@ public class DadosCadastroCargo {
 	public boolean possuiAcesso;
 	public ArrayList<Horario> horariosPermitidos;
 	
+	/**
+	 * Classe apenas para "carregar" dados utilizados ao criar um novo cargo
+	 * @param codigo
+	 * @param nome
+	 * @param ehGerencial
+	 * @param possuiAcesso
+	 * @param horariosPermitidos
+	 */
 	public DadosCadastroCargo(int codigo, String nome, boolean ehGerencial, boolean possuiAcesso, ArrayList<Horario> horariosPermitidos) {
 		this.codigo = codigo;
 		this.nome = nome;

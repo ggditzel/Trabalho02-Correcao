@@ -60,6 +60,7 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 		GerencialListener rbGerencialListener = new GerencialListener();
 		AcessoListener rbAcessoListener = new AcessoListener();
 
+		// label e caixa de texto para solicitar o nome do cargo
 		jlPedeNomeCargo = new JLabel("Nome do cargo");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		adicionaComponente(jlPedeNomeCargo, 0, 0, 1, 1);
@@ -67,7 +68,8 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 		tfPedeNomeCargo = new JTextField("Nome");
 		tfPedeNomeCargo.selectAll();
 		adicionaComponente(tfPedeNomeCargo, 1, 0, 2, 1);
-			
+		
+		// label e caixa de texto para solicitar o codigo do cargo
 		jlPedeCodigoCargo = new JLabel("Codigo do cargo");
 		adicionaComponente(jlPedeCodigoCargo, 0, 1, 1, 1);
 		
@@ -75,39 +77,35 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 		tfPedeCodigoCargo.selectAll();
 		adicionaComponente(tfPedeCodigoCargo, 1, 1, 2, 1);
 		
-		
+		// label e radio button para informar se o cargo eh gerencial ou nao
 		lbGerencial = new JLabel("Este cargo eh gerencial?");
 		adicionaComponente(lbGerencial, 0, 2, 1, 1);
-		
-		
 		rbSimGerencial = new JRadioButton("Sim", false);
 		adicionaComponente(rbSimGerencial, 1, 2, 1, 1);
-		
 		rbNaoGerencial = new JRadioButton("Nao", true);
 		adicionaComponente(rbNaoGerencial, 2, 2, 1, 1);
-		
+		// grupo para associar logicamente os botoes de selecao
 		grupoRbGerencial = new ButtonGroup();
 		grupoRbGerencial.add(rbNaoGerencial);
 		grupoRbGerencial.add(rbSimGerencial);
 		rbSimGerencial.addItemListener(rbGerencialListener);
 		rbNaoGerencial.addItemListener(rbGerencialListener);
 
+		// label e radio button para informar se o cargo possui acesso
 		lbAcesso = new JLabel("Este cargo possui acesso?");
 		adicionaComponente(lbAcesso, 0, 3, 1, 1);
-		
 		rbSimAcesso = new JRadioButton("Sim", false);
 		adicionaComponente(rbSimAcesso, 1, 3, 1, 1);
-		
 		rbNaoAcesso = new JRadioButton("Nao", true);
 		adicionaComponente(rbNaoAcesso, 2, 3, 1, 1);
-		
+		// grupo para associar logicamente os botoes de selecao
 		grupoRbAcesso = new ButtonGroup();
 		grupoRbAcesso.add(rbNaoAcesso);
 		grupoRbAcesso.add(rbSimAcesso);
 		rbSimAcesso.addItemListener(rbAcessoListener);
 		rbNaoAcesso.addItemListener(rbAcessoListener);
-
-		//btHorarios = new JButton("Castrar Horarios");
+		
+		// adiciona o botao para cadastro de horarios, inicialmente nao eh visivel
 		btHorarios.addActionListener(btListener);
 		adicionaComponente(btHorarios, 0, 4, 3, 1);
 		btHorarios.setVisible(false);
@@ -122,6 +120,9 @@ public class TelaCadastroCargo extends TelaComGridBagLayout {
 		adicionaComponente(jlMensagem, 0, 6, 3, 1);
 	}
 
+	/**
+	 * Atualiza a tela com o padrao de textos e selecoes de botao, para novo cadastro
+	 */
 	private void valoresDefaultJanela() {
 		tfPedeNomeCargo.setText("Nome");
 		tfPedeNomeCargo.selectAll();

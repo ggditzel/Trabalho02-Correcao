@@ -56,6 +56,10 @@ public class Cargo implements ICargo, Serializable, Mapeavel<Integer>{
 		return horariosPermitidos;
 	}
 	
+	public void setHorariosPermitidos(ArrayList<Horario> horariosPermitidos) {
+		this.horariosPermitidos = horariosPermitidos;
+	}
+	
 	public String toString() {
 		return this.nome;
 	}

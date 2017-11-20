@@ -5,6 +5,9 @@ import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
+import br.ufsc.ine5605.CargoComFuncionarioAssociadoException;
+import br.ufsc.ine5605.funcionario.ControladorFuncionario;
+import br.ufsc.ine5605.funcionario.Funcionario;
 import br.ufsc.ine5605.horario.ControladorHorario;
 import br.ufsc.ine5605.horario.Horario;
 
@@ -12,22 +15,10 @@ public class ControladorCargo {
 	private ArrayList<Cargo> listaCargos;
 	private TelaOperacoesCargos telaOperacoesCargos;
 	private TelaCadastroCargo telaCadastroCargo;
-	private TelaCargo tela;
 	private MapeadorCargo mapeador;
 	private static ControladorCargo instancia;
 	
-	
-//	/****** OPCOES DO MENU PRINCIPAL ******/
-//	private final String[] opcoesMenuPrincipal = { "Voltar", "Listar Cargos Cadastrados", "Incluir Cargo", "Excluir Cargo",
-//	"Alterar Cargo" };
-//	
-//	/****** OPCOES DO MENU PARA EDICAO DOS CARGOS ******/
-//	private final String[] opcoesMenuEditarCargo = { "Voltar", "Alterar Descricao", "Alterar status gerencial/acesso", 
-//	"Alterar Horarios de Acesso" };
-//	
-	
 	private ControladorCargo() {
-		tela = new TelaCargo();
         listaCargos = new ArrayList<>();
         mapeador = new MapeadorCargo();
     }
@@ -39,6 +30,10 @@ public class ControladorCargo {
     	return instancia;
     }
     
+    /**
+     * 
+     * @return lista de objetos do tipo Cargo, lidos do arquivo
+     */
     public Collection<Cargo> getListaCargos() {
     	return mapeador.getList();
     }
@@ -47,120 +42,42 @@ public class ControladorCargo {
      * Chama a tela que mostra o menu principal (relacionado a Cargos)
      */
     public void mostraMenu(){
-//    	int opcao = -1;
-//    	do {
-//    		opcao = tela.mostraMenu(opcoesMenuPrincipal);
-//    		switch (opcao){
-//    		case 0: 
-//    			ControladorFuncionario.getInstance().incluirFuncionario();
-//    			break;
-//    		case 1: 
-//    			tela.listarCargos(listaCargos);
-//    			break;
-//    		case 2:
-//    			telaIncluirCargo();
-//    			break;
-//    		case 3:
-//  				excluirCargo();
-//     			break;
-//    		case 4:
-//    			alterarCargo();
-//    			break;
-//    		case 5:
-//    			ControladorTentativaAcesso.getInstance().iniciaTentativa();
-//    		}
-//    		
-//    	} while (opcao != 6);
+
     	telaOperacoesCargos = new TelaOperacoesCargos();
     	telaOperacoesCargos.setVisible(true);
     }
 	
+
     /**
-     * Chama a tela para edicao dos horarios. Verifica se o codigo digitado pertence a um cargo
-     *  que nao seja gerencial e que tenha permissao de acesso (ou seja, se eh um cargo que possua
-     *  horarios a serem editados) para entao chamar a tela apropriada de edicao.
+     * Chama tela para inclusao de cargos
      */
-//    private void alterarHorarios(){
-//    	int codigo = tela.alterarHorarios();
-//    	Cargo c = findCargoByCodigo(codigo);
-//    	if (c != null){
-//    		if (!c.getEhGerencial() && c.getPossuiAcesso()) {
-//    			ControladorHorario.getInstance().editaHorariosCargo(c);
-//    		} else {
-//    			tela.mostraMensagem("Este cargo nao aceita inclusao de horarios");
-//    		}
-//    	} else {
-//    		tela.mostraMensagem("Nao existe cargo com este codigo (" + codigo + ")");
-//    	}
-//    }
-//    
-//    private void alterarDescricao(){
-//    	DadosAlteraDescricao dados = tela.alterarDescricao();
-//    	Cargo c = findCargoByCodigo(dados.codigo);
-//    	if (c != null){
-//    		c.setNome(dados.nome);
-//    		tela.mostraMensagem("Nome alterado com sucesso para \"" + dados.nome + "\"");
-//    	} else {
-//    		tela.mostraMensagem("Nao existe cargo com este codigo (" + dados.codigo + ")");
-//    	}
-//    }
-
-//    /**
-//     * Caso o cargo passe a ser gerencial ou a nao possuir acesso, apaga a lista de horarios permitidos.
-//     * Caso o cargo passe a ser nao gerencial, e passe a ter acesso, solicita cadastro de horario.
-//     */
-//    private void alterarStatus(){
-//    	DadosAlteraStatus dados = tela.alterarStatus();
-//    	Cargo c = findCargoByCodigo(dados.codigo);
-//    	if (c != null){
-//    		boolean statusAcessoAnterior = c.getPossuiAcesso();
-//    		c.setEhGerencial(dados.statusGerencial);
-//    		c.setPossuiAcesso(dados.statusAcesso);
-//
-//    		if (c.getEhGerencial() || !c.getPossuiAcesso()){
-//    			
-//    			ControladorHorario.getInstance().removeTodosHorarios(c);
-//    			tela.mostraMensagem("Horarios permitidos, caso existissem, foram apagados");
-//    		}
-//
-//    		if (!c.getEhGerencial() && c.getPossuiAcesso()){
-//    			if (!statusAcessoAnterior){
-//    				ControladorHorario.getInstance().editaHorariosCargo(c);
-//    			} else {
-//    				tela.mostraMensagem("Este cargo ja possuia permissao de acesso, continua com horario(s) cadastrado(s) anteriormente");
-//    			}
-//    		}
-//    	}
-//    }
-
-    
-    /**
-    * Chama a tela para incluir cargo; apos tentativa de inclusao, solicita impressao de mensagem confirmando ou negando a inclusao
-    * 
-    * @return boolean "true" se cadastrado com sucesso; caso contrario, "false"
-    */
     public void telaIncluirCargo(){
     	telaCadastroCargo = new TelaCadastroCargo();
 		telaCadastroCargo.setVisible(true);
     }
     
+    /**
+     * Chama tela para edicao de cargos
+     * @param codigo codigo do cargo a ser alterado
+     */
     public void alterarCargo(int codigo) {
     	TelaAlterarCargo telaAlterarCargo = new TelaAlterarCargo(findCargoByCodigo(codigo));
     	telaAlterarCargo.setVisible(true);
     }
+    
+    /**
+     * Atualiza a referencia do cargo no arquivo de persistencia
+     * @param cargo a ser atualizado
+     */
+    public void gravarCargo(Cargo cargo) {
+    	mapeador.put(cargo);
+    }
 		
-    	
+    /**
+     * Inclui um novo cargo no arquivo de persistencia	
+     * @param cargo objeto com as informacoes para criacao do novo cargo
+     */
 	public void incluirCargo(DadosCadastroCargo cargo) { 
-//			boolean inclusaoOK = false;
-//		if (findCargoByCodigo(cargo.codigo) == null){
-//			listaCargos.add(new Cargo (cargo.codigo, cargo.nome, cargo.ehGerencial, cargo.possuiAcesso, cargo.horariosPermitidos));
-//			tela.mostraMensagem("Cargo cadastrado com sucesso");
-//			inclusaoOK = true;
-//		} else {
-//			tela.mostraMensagem("Este cargo ja esta cadastrado");
-//			inclusaoOK = false;
-//		}
-//		return inclusaoOK;
 		
 		if (mapeador.get(cargo.codigo) == null ) {		
 				mapeador.put(new Cargo (cargo.codigo, cargo.nome, cargo.ehGerencial, cargo.possuiAcesso, cargo.horariosPermitidos));
@@ -171,67 +88,45 @@ public class ControladorCargo {
 	
 	
 	/**
-	 * 
-	 * @param codigo Codigo numerico do cargo a ser excluido
-	 * @return boolean indicando sucesso (true) ou fracasso (false)
-	 * @throws Exception Codigo Inexistente, impossivel excluir
+	 * Exclui um cargo do arquivo, desde que nao haja nenhum funcionario associado a ele.
+	 * @param codigo codigo do cargo a ser excluido
+	 * @throws CargoComFuncionarioAssociadoException excecao para o caso de ja haver funcionario associado
 	 */
-    public void excluirCargo(int codigo) {
+    public void excluirCargo(int codigo) throws CargoComFuncionarioAssociadoException {
+    	
+    	for (Funcionario f : ControladorFuncionario.getInstance().listarFuncionarios()) {
+    		if (f.getCargo().toString().equals(mapeador.get(codigo).toString())) {
+    			throw new CargoComFuncionarioAssociadoException();
+    		}
+    	}
+
     	mapeador.remove(mapeador.get(codigo));
-    	
-//		int codigo = tela.excluirCargo();
-//		Cargo c = findCargoByCodigo(codigo);
-//		boolean remocaoOK = false;
-//		if (c != null){
-//			if (ControladorFuncionario.getInstance().listarFuncionariosPorCargo(codigo).isEmpty()){
-//				listaCargos.remove(c);
-//				ControladorHorario.getInstance().removeTodosHorarios(c);
-//				tela.mostraMensagem("Cargo excluido com sucesso");
-//				remocaoOK = true;
-//			} else {
-//				tela.mostraMensagem("Cargo nao pode ser excluido, possui funcionarios associados a ele");
-//				remocaoOK = false;
-//			}
-//		} else {
-//			tela.mostraMensagem("Codigo Inexistente, impossivel excluir");
-//		}
-//		return remocaoOK;
-    	
-    	
-    	
+
 	}
 	
-	public Cargo findCargoByCodigo(int codigo){
+	/**
+	 * Retorna um cargo associado a um codigo de busca
+	 * @param codigo codigo do cargo a ser buscado
+	 * @return Cargo solicitado
+	 */
+    public Cargo findCargoByCodigo(int codigo){
 		return mapeador.get(codigo);
 	}
 
-	/**
-	 * Permite editar as informacoes de cargo.
-	 * Opcoes: "Voltar", "Alterar Descricao", "Alterar status gerencial", "Alterar status de acesso", "Alterar Horarios de Acesso" 
-	 */
-//    private void alterarCargo() {
-//        int opcao = tela.mostraMenu(opcoesMenuEditarCargo);
-//        switch (opcao){
-//            case 0:
-//                break;
-//            case 1:
-//                alterarDescricao();
-//                break;
-//            case 2:
-//                alterarStatus();
-//                break;
-//            case 3:
-//                alterarHorarios();
-//                break;
-//        }
-//    }
 
-	public ArrayList<Horario> pegaHorarios() {
+	/**
+	 * Chama o controlador de horarios para iniciar o cadastro de horarios pertmitidos
+	 * @return
+	 */
+    public ArrayList<Horario> pegaHorarios() {
 		
 		return ControladorHorario.getInstance().iniciaCadastro();
 	}
 	
-	public void atualizaTabela() {
+	/**
+	 * Atualiza a tabela que mostra a lista de cargos na tela de operacoes com cargos 
+	 */
+    public void atualizaTabela() {
 		telaOperacoesCargos.atualizaTabela();
 	}
 

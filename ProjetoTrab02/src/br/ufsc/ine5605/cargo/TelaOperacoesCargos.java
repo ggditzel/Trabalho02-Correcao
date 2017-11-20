@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import br.ufsc.ine5605.CargoComFuncionarioAssociadoException;
 import br.ufsc.ine5605.TelaComGridBagLayout;
 import br.ufsc.ine5605.horario.Horario;
 
@@ -24,7 +25,6 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 	private JButton btCadastrar;
 	private JButton btExcluir;
 	private JButton btEditar;
-	private JButton btAtualizar;
 	
 	private JLabel lbNomeTabela;
 	private JTable tabelaCargos;
@@ -32,6 +32,9 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 	
 	private Collection<Cargo> listaTabela;
 	
+	/** 
+	 * Tela de operacoes com cargos, permite: cadastrar, editar e excluir cargos
+	 */
 	public TelaOperacoesCargos () {
 		
 		super("Operacoes com Cargos");
@@ -45,8 +48,6 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		btExcluir.addActionListener(btListener);
 		btEditar = new JButton("Editar");
 		btEditar.addActionListener(btListener);
-		//btAtualizar = new JButton("Atualizar");
-		//btAtualizar.addActionListener(btListener);
 		lbNomeTabela = new JLabel("Cargos Cadastrados");
 		
 		tabelaCargos = new JTable();
@@ -58,7 +59,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		adicionaComponente(lbNomeTabela, 0, 0, 1, 1);
 		adicionaComponente(spTabela, 0, 1, 1, 1);
 		
-		// organiza os botoes inferiores
+		// organiza os botoes inferiores em um painel separado, estilo FlowLayout
 		JPanel botoesInferiores = new JPanel();
 		botoesInferiores.setLayout(new FlowLayout());
 		botoesInferiores.add(btCadastrar);
@@ -70,6 +71,9 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		
 	}
 
+	/**
+	 * Atualiza a tabela (lista) de cargos exibida na tela, apos cadastro, exclusao ou edicao de cargos
+	 */
 	public void atualizaTabela() {
 		
 		DefaultTableModel modeloTabela = new DefaultTableModel();
@@ -87,6 +91,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 			this.repaint();
 		}
 		
+		// cria as linhas da tabela
 		for (Cargo c : listaTabela) {
 			int codigo = c.getCodigo();
 			String nome = c.getNome();
@@ -111,8 +116,11 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 					int linha = tabelaCargos.getSelectedRow();
 					int codigo = (int) tabelaCargos.getValueAt(linha, 0);
 					ControladorCargo.getInstance().excluirCargo(codigo);
+				} catch (CargoComFuncionarioAssociadoException ex) { // excecao criada para evitar a exclusao, caso ja haja funcionario associado
+					JOptionPane.showMessageDialog(null, ex.getMessage(), ex.getMessage(), JOptionPane.WARNING_MESSAGE);
+				
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Selecione um cargo da lista", "Cargo Nao Selecionado", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Selecione um cargo da lista", "Cargo Nao Selecionado", JOptionPane.WARNING_MESSAGE);
 				}
 				atualizaTabela();
 			} else if(e.getSource() == btEditar) {
@@ -122,7 +130,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 					int codigo = (int) tabelaCargos.getValueAt(linha, 0);
 					ControladorCargo.getInstance().alterarCargo(codigo);
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Selecione um cargo da lista", "Cargo Nao Selecionado", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Selecione um cargo da lista", "Cargo Nao Selecionado", JOptionPane.WARNING_MESSAGE);
 				}
 				
 			}

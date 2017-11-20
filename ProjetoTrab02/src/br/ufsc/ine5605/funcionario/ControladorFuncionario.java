@@ -12,7 +12,7 @@ import br.ufsc.ine5605.cargo.ControladorCargo;
 public class ControladorFuncionario {
 	private MapeadorFuncionario mapeadorF;
 	private Collection<Funcionario> listaFuncionarios;
-	private Collection<Funcionario> listaFuncEdit;
+	private Funcionario funcEdit;
 	private static ControladorFuncionario instancia;
 	private TelaFuncionario tela;
 	private TelaInformFuncionario telaCadastroFuncionario;
@@ -369,15 +369,26 @@ public class ControladorFuncionario {
 			// + " ---/DATA NASCIMENTO : " +
 			// (formataDataPraPrintar(fTemp.getDataNascimento()))
 			// + " ---/SALARIO : " + (fTemp.getSalario()));
-			tela.mostraMensagem("==============================================");
+			tela.mostraMensagem("=");
 		}
 	}
-
+	//===========================================================================================================================
+	//===========================================================================================================================
+	//===========================================================================================================================
+	//===========================================================================================================================
+	//===========================================================================================================================
+	
+	//Daqui pra frente codigo novo
 	/*
-	 * Daqui pra frente codigo novo
+	 * Chama a tela principal, com a lista de funcionarios em um Grid
 	 */
+	public void telaOperacoesFuncionarios() {
+		telaOperacoesFuncionarios = new TelaOperacoesFuncionarios();
+		telaOperacoesFuncionarios.setVisible(true);
+	}
+	
 	/*
-	 * Chama a tela e da SetVisible = true.
+	 * Chama a tela de cadastro de funcionarios.
 	 */
 	public void telaCadastroFuncionario() {
 		if (!ControladorCargo.getInstance().getListaCargos().isEmpty()) {
@@ -386,11 +397,6 @@ public class ControladorFuncionario {
 		} else {
 			telaOperacoesFuncionarios.erroNaoTemCargo();
 		}
-	}
-
-	public void telaOperacoesFuncionarios() {
-		telaOperacoesFuncionarios = new TelaOperacoesFuncionarios();
-		telaOperacoesFuncionarios.setVisible(true);
 	}
 
 	/*
@@ -411,19 +417,31 @@ public class ControladorFuncionario {
 		}
 
 	}
+	
 
-	private Funcionario funcEdit;
-
+	/*
+	 * recebe como parametro um inteiro, referente a matricula de um funcionario selecionado
+	 * o objeto funcEdit guarda o funcionario a ser editado
+	 */
 	public void telaEditarFuncionario(int matricula) {
 		funcEdit = mapeadorF.get(matricula);
 		telaEditFuncionario = new TelaInformFuncionario(funcEdit);
 		telaEditFuncionario.setVisible(true);
 	}
-
+	/*
+	 * Chama o mapeador para excluir o funcionario cuja matricula é a entrada do metodo
+	 */
 	public void excluiFuncionarioByMatricula(int matricula) {
 		mapeadorF.remove(mapeadorF.get(matricula));
 
 	}
+	/*
+	 * recebe int matricula, String nome, Cargo cargoEditado, String telefone,
+			String dataNascimento, int salario
+			edita o funcionario selecionado
+			atualiza a tabela da telaOperacoesFuncionarios
+			envia mensagem de confirmacao ou de falha
+	 */
 
 	public void editarTodosOsDados(int matricula, String nome, Cargo cargoEditado, String telefone,
 			String dataNascimento, int salario) {
