@@ -35,7 +35,7 @@ public class TelaRelatorios extends TelaComGridBagLayout{
 	public TelaRelatorios() {
 		
 		super("Relatorios de acesso");
-		setSize(1000, 250);
+		setSize(1000, 400);
 		setLocationRelativeTo(null);
 		
 		ButtonActionListener btListener = new ButtonActionListener();
