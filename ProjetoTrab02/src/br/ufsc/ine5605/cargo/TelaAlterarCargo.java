@@ -82,13 +82,14 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 		tfPedeNomeCargo.selectAll();
 		adicionaComponente(tfPedeNomeCargo, 1, 0, 2, 1);
 			
-		//solicita codigo do cargo, preenche com o antigo
+		//solicita codigo do cargo, preenche com o antigo; nao sera possivel editar
 		jlPedeCodigoCargo = new JLabel("Codigo do cargo");
 		adicionaComponente(jlPedeCodigoCargo, 0, 1, 1, 1);
 		
 		tfPedeCodigoCargo = new JTextField(Integer.toString(cargoAnterior.getCodigo()));
 		tfPedeCodigoCargo.selectAll();
 		adicionaComponente(tfPedeCodigoCargo, 1, 1, 2, 1);
+		tfPedeCodigoCargo.setEnabled(false);
 		
 		//solicita se eh gerencial, seleciona botao antigo
 		lbGerencial = new JLabel("Este cargo eh gerencial?");
@@ -161,20 +162,6 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 			}
 			
 			if (evento.getSource() == btEditar) {
-				try {
-					codigo = Integer.parseInt(tfPedeCodigoCargo.getText());
-				} catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(null, "Digite apenas numeros para o codigo", "Erro de Dados", JOptionPane.WARNING_MESSAGE);
-					abortaCadastro = true;
-				}
-				
-				// se ja existe cargo cadastrado com o codigo editado, aborta o cadastro
-				if (codigo != cargoAnterior.getCodigo()){
-					if (ControladorCargo.getInstance().findCargoByCodigo(codigo) != null) {
-						JOptionPane.showMessageDialog(null, "Codigo ja em uso, favor escolher outro", "Codigo ja em uso", JOptionPane.WARNING_MESSAGE);
-						abortaCadastro = true;
-					}
-				}
 				
 				nome = tfPedeNomeCargo.getText();
 				ehGerencial = rbSimGerencial.isSelected();
@@ -186,7 +173,6 @@ public class TelaAlterarCargo extends TelaComGridBagLayout {
 				}
 				
 				if (!abortaCadastro){
-					cargoAnterior.setCodigo(codigo);
 					cargoAnterior.setNome(nome);
 					cargoAnterior.setEhGerencial(ehGerencial);
 					cargoAnterior.setPossuiAcesso(possuiAcesso);
