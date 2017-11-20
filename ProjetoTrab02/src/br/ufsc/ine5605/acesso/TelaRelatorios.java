@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import br.ufsc.ine5605.TelaComGridBagLayout;
-import br.ufsc.ine5605.cargo.Cargo;
 
 public class TelaRelatorios extends TelaComGridBagLayout{
 	
@@ -38,7 +37,6 @@ public class TelaRelatorios extends TelaComGridBagLayout{
 		super("Relatorios de acesso");
 		setSize(1000, 250);
 		setLocationRelativeTo(null);
-		//setVisible(true);
 		
 		ButtonActionListener btListener = new ButtonActionListener();
 		
@@ -80,14 +78,20 @@ public class TelaRelatorios extends TelaComGridBagLayout{
 		adicionaComponente(btReset, 0, 10, 1, 1);
 		
 	}
-	
+	/**
+         * Atualiza os valores da tabela
+         */
 	public void atualizaTabela() {
 		atualizaTabela(ControladorTentativaAcesso.getInstance().getTentativas());
 	}
-	
+	/**
+         * Atualiza os valores da tabela para os valores de uma lista
+         * @param lista 
+         */
 	public void atualizaTabela(Collection<TentativaAcesso> lista) {
 		DefaultTableModel modeloTabela = new DefaultTableModel();
 		modeloTabela.addColumn("Matricula");
+                modeloTabela.addColumn("Nome");
 		modeloTabela.addColumn("Conseguiu acessar?");
 		modeloTabela.addColumn("Motivo");
 		modeloTabela.addColumn("Data");
@@ -96,17 +100,18 @@ public class TelaRelatorios extends TelaComGridBagLayout{
 		
 		
 		if (lista.isEmpty()) {
-			modeloTabela.addRow(new Object[] {"", "", "", "", ""});
+			modeloTabela.addRow(new Object[] {"", "", "", "", "",""});
 			tbTabela.setModel(modeloTabela);
 			this.repaint();
 		} else {
 			for(TentativaAcesso t: lista) {
 				int matricula = t.getMatricula();
+                                String nome = t.getNome();
 				String acessou = t instanceof TentativaAcessoPermitido ? "Sim" : "Nao";
 				String motivo = t instanceof TentativaAcessoPermitido ? "" : ((TentativaAcessoNegado) t).getMotivo().getNome();
 				String data = t.getData();
 				String horario = t.getHora().toString();
-				modeloTabela.addRow(new Object[] {matricula,acessou, motivo, data, horario});
+				modeloTabela.addRow(new Object[] {matricula, nome, acessou, motivo, data, horario});
 				tbTabela.setModel(modeloTabela);
 				repaint();
 			}
