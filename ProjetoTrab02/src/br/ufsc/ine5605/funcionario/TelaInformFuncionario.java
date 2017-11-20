@@ -96,11 +96,11 @@ public class TelaInformFuncionario extends TelaComGridBagLayout {
 		String[] diaString = new String[31];
 		String[] mesString = new String[12];
 		String[] anoString = new String[100];
-		for (int a = 0; a < 31; a++) {
-			diaString[a] = a + a + "";
+		for (int a = 1; a <= 31; a++) {
+			diaString[a-1] = a + "";
 		}
-		for (int b = 0; b < 12; b++) {
-			mesString[b] = b + "";
+		for (int b = 1; b < 13; b++) {
+			mesString[b-1] = b + "";
 		}
 		for (int c = 0; c < 100; c++) {
 			anoString[c] = 2017 - c + "";
