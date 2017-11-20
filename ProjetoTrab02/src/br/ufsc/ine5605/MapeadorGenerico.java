@@ -21,27 +21,42 @@ public class MapeadorGenerico<K, T extends Mapeavel<K>> {
 	   
 	    public MapeadorGenerico(String nomeArquivo){
 	        this.nomeArquivo = nomeArquivo;
-	    	load(); // implementar metodo de load, conforme slide
+	    	load(); 
 	    }
-	    
+	    /**
+             * Adiciona um item na lista
+             * @param objeto item que sera adicionado na lista
+             */
 	    public void put(T objeto){
 	    	cache.put(objeto.getID(), objeto);
-	        persist(); // fazer metodo privado, de acordo com o que tem nos slides
+	        persist();
 	    }
-	   
+	   /**
+            * Pega um elemento da lista
+            * @param codigo identificador do objeto
+            * @return objeto que possui o identificador da entrada
+            */
 	    public T get(K codigo){
 	        return cache.get(codigo);
 	    }
-	   
+	   /**
+            * Pega a lista de objetos
+            * @return lista
+            */
 	    public Collection<T> getList(){
 	        return cache.values();
 	    }
-	   
+	   /**
+            * Remove um objeto da lista
+            * @param objeto objeto a ser removido
+            */
 	    public void remove(T objeto){
 	    	cache.remove(objeto.getID());
 	        persist();
 	    }
-	    
+	    /**
+             * Carrega a lista de objetos salvas no arquivo, caso nao haja arquivo cria um
+             */
 	    public void load() {
 	    	try {
 	    		FileInputStream arquivo = new FileInputStream(nomeArquivo);
@@ -57,7 +72,9 @@ public class MapeadorGenerico<K, T extends Mapeavel<K>> {
 	    		JOptionPane.showMessageDialog(null, "IOException", "Excecao", JOptionPane.ERROR_MESSAGE);
 	    	}
 	    }
-	    
+	    /**
+             * Grava os dados no arquivo
+             */
 	    public void persist() {
 	    	
 	    	try {
