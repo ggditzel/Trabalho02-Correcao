@@ -53,6 +53,7 @@ public class TelaOperacoesCargos extends TelaComGridBagLayout {
 		tabelaCargos = new JTable();
 		tabelaCargos.setPreferredScrollableViewportSize(new Dimension(600, 60));
 		tabelaCargos.setFillsViewportHeight(true);
+		tabelaCargos.getTableHeader().setReorderingAllowed(false);
 		spTabela = new JScrollPane(tabelaCargos);
 		atualizaTabela();
 		
